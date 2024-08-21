@@ -14,6 +14,7 @@ import com.example.yandexmds.domain.useCases.EditToDoUseCase
 import com.example.yandexmds.domain.useCases.GetToDoItemUseCase
 import com.example.yandexmds.domain.useCases.GetToDoListUseCase
 import kotlinx.coroutines.launch
+import java.util.Random
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -24,7 +25,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val getTask = GetToDoItemUseCase(repository)
     private val getTaskList = GetToDoListUseCase(repository)
 
-    val taskList = getTaskList.getToDoList()
+    val random = Random()
+
+    val list = List(30) { index ->
+        ToDoItemEntity(
+            id = index,
+            description = "Купить что-то",
+            significance = if(random.nextBoolean()) Significance.USUAL else Significance.HIGH,
+            achievement = random.nextBoolean(),
+            deadline = null
+        )
+    }
+    val taskList = MutableLiveData(list)
+    //getTaskList.getToDoList()
 
     private val _task = MutableLiveData<ToDoItemEntity>()
     val task: LiveData<ToDoItemEntity>
@@ -50,7 +63,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun changeAchievement(task: ToDoItemEntity){
+    fun changeAchievement(task: ToDoItemEntity) {
         val newTask = task.copy(achievement = !task.achievement)
         viewModelScope.launch {
             editTask.editToDo(newTask)
@@ -63,7 +76,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         achievement: Boolean,
         deadline: String
     ) {
-        if (description.isNotEmpty()){
+        if (description.isNotEmpty()) {
             _task.value?.let {
                 val task = it.copy(
                     description = description,
@@ -78,7 +91,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun deleteTask(task: ToDoItemEntity){
+    fun deleteTask(task: ToDoItemEntity) {
         viewModelScope.launch {
             deleteTask.deleteToDo(task)
         }
