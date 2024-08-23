@@ -1,4 +1,4 @@
-package com.example.yandexmds.presentation
+package com.example.yandexmds.presentation.screens.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -27,13 +27,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val random = Random()
 
-    val list = List(30) { index ->
+    var list = MutableList(30) { index ->
         ToDoItemEntity(
             id = index,
             description = "Купить что-то",
-            significance = if(random.nextBoolean()) Significance.USUAL else Significance.HIGH,
+            significance = if(random.nextBoolean()) Significance.LOW else Significance.HIGH,
             achievement = random.nextBoolean(),
-            deadline = null
+            deadline = if(random.nextBoolean()) "01.11.2025" else null
         )
     }
     val taskList = MutableLiveData(list)
@@ -60,6 +60,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             viewModelScope.launch {
                 addTask.addToDo(task)
             }
+            // временное решение
+            val oldList = taskList.value?.toMutableList() ?: mutableListOf()
+            list = oldList.apply {
+                add(task.copy(id = oldList.size))
+            }
+            taskList.value = list
+
         }
     }
 
@@ -68,6 +75,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             editTask.editToDo(newTask)
         }
+
+        // временное решение
+        val oldList = taskList.value?.toMutableList() ?: mutableListOf()
+        list = oldList.apply {
+            replaceAll {
+                if (it.id == newTask.id) {
+                    newTask
+                } else {
+                    it
+                }
+            }
+        }
+        taskList.value = list
     }
 
     fun editTask(

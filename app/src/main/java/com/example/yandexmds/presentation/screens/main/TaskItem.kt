@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -33,8 +34,11 @@ import com.example.yandexmds.ui.theme.Red
 
 
 @Composable
-fun TaskItem(task: ToDoItemEntity,
-             onCheckClickListener: (ToDoItemEntity) -> Unit) {
+fun TaskItem(
+    task: ToDoItemEntity,
+    onCheckClickListener: (ToDoItemEntity) -> Unit
+) {
+
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.secondary)
@@ -45,7 +49,7 @@ fun TaskItem(task: ToDoItemEntity,
         Check(
             task = task,
             onCheckClickListener = onCheckClickListener
-            )
+        )
 
         if (task.significance == Significance.USUAL) {
             Text(
@@ -96,9 +100,9 @@ fun TaskItem(task: ToDoItemEntity,
                 if (!task.achievement) {
                     Icon(
                         modifier = Modifier
-                            .size(10.dp, 16.dp)
-                            .padding(vertical = 3.dp, horizontal = 2.5.dp),
-                        painter = painterResource(id = R.drawable.low), contentDescription = null
+                            .size(18.dp),
+                        imageVector = Icons.Filled.ArrowDownward, contentDescription = null,
+                        tint = Gray
                     )
                 }
                 TextDescription(task)
@@ -132,7 +136,8 @@ fun Check(
             uncheckedBorderColor = if (significance == Significance.HIGH) Red else Gray,
             checkedBoxColor = Green,
             checkedCheckmarkColor = MaterialTheme.colorScheme.primary,
-            checkedBorderColor = Green)
+            checkedBorderColor = Green
+        )
     )
 }
 
