@@ -47,7 +47,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         description: String,
         significance: Significance,
         achievement: Boolean,
-        deadline: String
+        deadline: String?
     ) {
         if (description.isNotEmpty()) {
             val task = ToDoItemEntity(

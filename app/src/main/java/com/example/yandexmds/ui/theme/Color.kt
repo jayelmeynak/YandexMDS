@@ -21,3 +21,5 @@ val LightSeparatorColor = Color(0x33000000)
 val DarkSeparatorColor = Color(0x33FFFFFF)
 val LightOverlayColor = Color(0x0F000000)
 val DarkOverlayColor = Color(0x52000000)
+
+val BlueShadow = Color(0x4D007AFF)
