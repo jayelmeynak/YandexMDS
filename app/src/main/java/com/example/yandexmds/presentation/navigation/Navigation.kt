@@ -1,36 +1,37 @@
 package com.example.yandexmds.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.yandexmds.presentation.screens.addAndEdit.AddScreen
+import com.example.yandexmds.presentation.screens.main.MainScreen
 
 @Composable
-fun Navigation(
-    mainScreen: @Composable (navController: NavController) -> Unit,
-    addScreen: @Composable () -> Unit,
-    editScreen: @Composable (id: Int) -> Unit
-) {
+fun Navigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.ROUTE_MAIN) {
+
+    NavHost(navController = navController, startDestination = Screen.Main.route) {
         composable(Screen.Main.route) {
-            mainScreen(navController)
+            MainScreen(navController = navController)
         }
         composable(Screen.Add.route) {
-            addScreen()
+            AddScreen(id = null, navController = navController)
         }
         composable(
             route = Screen.Edit.route + "/{id}",
             arguments = listOf(
-                navArgument(name = "id") {
+                navArgument("id") {
                     type = NavType.IntType
                 }
             )
         ) { navBackStackEntry ->
-            editScreen(navBackStackEntry.arguments?.getInt("id") ?: 0)
+            val id = navBackStackEntry.arguments?.getInt("id")
+            if (id != null) {
+                AddScreen(id = id, navController = navController)
+            }
         }
     }
 }

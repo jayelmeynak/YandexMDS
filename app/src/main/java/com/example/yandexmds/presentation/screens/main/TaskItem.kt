@@ -1,7 +1,9 @@
 package com.example.yandexmds.presentation.screens.main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -36,13 +38,17 @@ import com.example.yandexmds.ui.theme.Red
 @Composable
 fun TaskItem(
     task: ToDoItemEntity,
-    onCheckClickListener: (ToDoItemEntity) -> Unit
+    onCheckClickListener: (ToDoItemEntity) -> Unit,
+    onTaskClickListener: (ToDoItemEntity) -> Unit
 ) {
 
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.secondary)
-            .padding(vertical = 12.dp),
+            .padding(vertical = 12.dp)
+            .clickable {
+                onTaskClickListener(task)
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -52,60 +58,93 @@ fun TaskItem(
         )
 
         if (task.significance == Significance.USUAL) {
-            Text(
-                modifier = Modifier
-                    .padding(vertical = 2.dp)
-                    .padding(start = 12.dp)
-                    .weight(2F),
-                text = task.description,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    textDecoration =
-                    if (task.achievement) {
-                        TextDecoration.LineThrough
-                    } else {
-                        TextDecoration.None
-                    }
+            Column(modifier = Modifier.weight(2F)) {
+                Text(
+                    modifier = Modifier
+                        .padding(vertical = 2.dp)
+                        .padding(start = 12.dp),
+                    text = task.description,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        textDecoration =
+                        if (task.achievement) {
+                            TextDecoration.LineThrough
+                        } else {
+                            TextDecoration.None
+                        }
+                    )
                 )
-            )
+                if (task.deadline != null) {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 2.dp)
+                            .padding(start = 12.dp),
+                        text = task.deadline,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onTertiary
+                    )
+                }
+            }
         }
 
         if (task.significance == Significance.HIGH) {
-            Row(
-                modifier = Modifier
-                    .weight(2F)
-                    .padding(start = 12.dp),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                if (!task.achievement) {
-                    Icon(
+            Column(modifier = Modifier.weight(2F)) {
+                Row(
+                    modifier = Modifier
+                        .padding(start = 12.dp),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    if (!task.achievement) {
+                        Icon(
+                            modifier = Modifier
+                                .size(18.dp),
+                            imageVector = Icons.Filled.PriorityHigh,
+                            contentDescription = null,
+                            tint = Red
+                        )
+                    }
+                    TextDescription(task)
+                }
+                if (task.deadline != null) {
+                    Text(
                         modifier = Modifier
-                            .size(18.dp),
-                        imageVector = Icons.Filled.PriorityHigh,
-                        contentDescription = null,
-                        tint = Red
+                            .padding(vertical = 2.dp)
+                            .padding(start = 12.dp),
+                        text = task.deadline,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
-                TextDescription(task)
             }
         }
         if (task.significance == Significance.LOW) {
-            Row(
-                modifier = Modifier
-                    .weight(2F)
-                    .padding(start = 12.dp)
-            ) {
-                if (!task.achievement) {
-                    Icon(
+            Column(modifier = Modifier.weight(2F)) {
+                Row(
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                ) {
+                    if (!task.achievement) {
+                        Icon(
+                            modifier = Modifier
+                                .size(18.dp),
+                            imageVector = Icons.Filled.ArrowDownward, contentDescription = null,
+                            tint = Gray
+                        )
+                    }
+                    TextDescription(task)
+                }
+                if (task.deadline != null) {
+                    Text(
                         modifier = Modifier
-                            .size(18.dp),
-                        imageVector = Icons.Filled.ArrowDownward, contentDescription = null,
-                        tint = Gray
+                            .padding(vertical = 2.dp)
+                            .padding(start = 12.dp),
+                        text = task.deadline,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
-                TextDescription(task)
             }
         }
 

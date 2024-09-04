@@ -14,7 +14,6 @@ import com.example.yandexmds.domain.useCases.EditToDoUseCase
 import com.example.yandexmds.domain.useCases.GetToDoItemUseCase
 import com.example.yandexmds.domain.useCases.GetToDoListUseCase
 import kotlinx.coroutines.launch
-import java.util.Random
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,18 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val getTask = GetToDoItemUseCase(repository)
     private val getTaskList = GetToDoListUseCase(repository)
 
-    val random = Random()
-
-    var list = MutableList(30) { index ->
-        ToDoItemEntity(
-            id = index,
-            description = "Купить что-то",
-            significance = if(random.nextBoolean()) Significance.LOW else Significance.HIGH,
-            achievement = random.nextBoolean(),
-            deadline = if(random.nextBoolean()) "01.11.2025" else null
-        )
-    }
-    val taskList = MutableLiveData(list)
+    val taskList = getTaskList.getToDoList()
     //getTaskList.getToDoList()
 
     private val _task = MutableLiveData<ToDoItemEntity>()
@@ -50,7 +38,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         deadline: String?
     ) {
         if (description.isNotEmpty()) {
-            val task = ToDoItemEntity(
+            val task =
+            ToDoItemEntity(
                 id = UNDEFINED_ID,
                 description = description,
                 significance = significance,
@@ -60,12 +49,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             viewModelScope.launch {
                 addTask.addToDo(task)
             }
-            // временное решение
-            val oldList = taskList.value?.toMutableList() ?: mutableListOf()
-            list = oldList.apply {
-                add(task.copy(id = oldList.size))
-            }
-            taskList.value = list
+//            временное решение
+//            val oldList = taskList.value?.toMutableList() ?: mutableListOf()
+//            list = oldList.apply {
+//                add(task.copy(id = oldList.size))
+//            }
+//            taskList.value = list
 
         }
     }
@@ -77,24 +66,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         // временное решение
-        val oldList = taskList.value?.toMutableList() ?: mutableListOf()
-        list = oldList.apply {
-            replaceAll {
-                if (it.id == newTask.id) {
-                    newTask
-                } else {
-                    it
-                }
-            }
-        }
-        taskList.value = list
+//        val oldList = taskList.value?.toMutableList() ?: mutableListOf()
+//        list = oldList.apply {
+//            replaceAll {
+//                if (it.id == newTask.id) {
+//                    newTask
+//                } else {
+//                    it
+//                }
+//            }
+//        }
+//        taskList.value = list
     }
 
     fun editTask(
         description: String,
         significance: Significance,
         achievement: Boolean,
-        deadline: String
+        deadline: String?
     ) {
         if (description.isNotEmpty()) {
             _task.value?.let {

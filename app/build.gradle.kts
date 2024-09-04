@@ -72,4 +72,5 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation ("androidx.compose.material:material:1.6.8")
     implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
+    implementation (libs.androidx.navigation.compose)
 }

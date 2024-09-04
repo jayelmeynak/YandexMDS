@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.yandexmds.presentation.screens.addAndEdit.AddScreen
+import com.example.yandexmds.presentation.navigation.Navigation
 import com.example.yandexmds.ui.theme.YandexMDSTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,8 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             YandexMDSTheme {
-//                Navigation()
-                AddScreen()
+                Navigation()
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.yandexmds.presentation.screens.main
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -25,22 +26,24 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.yandexmds.R
+import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen() {
-    val viewModel: MainViewModel = viewModel()
+fun MainScreen(navController: NavController) {
+    val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
     val taskList = viewModel.taskList.observeAsState(listOf())
     val countCompletedTasks = remember {
         mutableIntStateOf(0)
     }
-
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
 
@@ -54,7 +57,9 @@ fun MainScreen() {
                 modifier = Modifier.size(56.dp),
                 shape = CircleShape,
                 containerColor = Blue,
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    navController.navigate(Screen.Add.route)
+                }) {
                 Icon(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.add),
@@ -81,6 +86,7 @@ fun MainScreen() {
                             when (it) {
                                 SwipeToDismissBoxValue.StartToEnd -> {
                                     viewModel.changeAchievement(model)
+                                    return@rememberSwipeToDismissBoxState false
                                 }
 
                                 SwipeToDismissBoxValue.EndToStart -> {
@@ -102,8 +108,12 @@ fun MainScreen() {
                         }) {
                         TaskItem(
                             task = model,
-                            onCheckClickListener = {
-                                viewModel.changeAchievement(model)
+                            onCheckClickListener = { task ->
+                                viewModel.changeAchievement(task)
+                            },
+                            onTaskClickListener = { task ->
+                                val id = task.id
+                                navController.navigate(Screen.Edit.route + "/$id")
                             }
                         )
                     }
