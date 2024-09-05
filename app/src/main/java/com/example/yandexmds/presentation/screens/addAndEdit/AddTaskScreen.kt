@@ -1,5 +1,6 @@
 package com.example.yandexmds.presentation.screens.addAndEdit
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,7 +38,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -68,7 +71,10 @@ import java.util.Locale
 @Composable
 fun AddScreen(id: Int?, navController: NavController) {
     val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
-    val task = viewModel.task.value
+
+    val task = viewModel.task.observeAsState()
+    val isTaskLoaded by viewModel.isTaskLoaded.collectAsState()
+
     var text by remember { mutableStateOf(("")) }
     val scrollState = rememberScrollState()
     val expanded = remember { mutableStateOf(false) }
@@ -80,19 +86,28 @@ fun AddScreen(id: Int?, navController: NavController) {
         mutableStateOf<LocalDate?>(null)
     }
 
-
     LaunchedEffect(id) {
         if (id != null) {
+            Log.d("MyLog", id.toString())
             viewModel.getTask(id)
-            text = viewModel.task.value?.description ?: ""
-            selectedOption.value = viewModel.task.value?.significance ?: Significance.USUAL
-            val deadline = viewModel.task.value?.deadline
-            if (deadline != null) {
-                pickedDate.value = stringToLocalDate(deadline)
-                checked.value = true
-            }
         }
     }
+
+    LaunchedEffect(isTaskLoaded) {
+        if (isTaskLoaded) {
+            viewModel.task.value?.let { task ->
+                text = task.description
+                selectedOption.value = task.significance
+                val deadline = task.deadline
+                if (deadline != null) {
+                    pickedDate.value = stringToLocalDate(deadline)
+                    checked.value = true
+                }
+            }
+            viewModel.changeLoaded()
+        }
+    }
+
     val dateDialogState = rememberMaterialDialogState()
     Scaffold(
         topBar = {
@@ -212,8 +227,8 @@ fun AddScreen(id: Int?, navController: NavController) {
                         if (id == null) {
                             navController.navigateUp()
                         } else {
-                            if (task != null) {
-                                viewModel.deleteTask(task)
+                            if (task.value != null) {
+                                viewModel.deleteTask(task.value!!)
                                 navController.navigateUp()
                             }
                         }

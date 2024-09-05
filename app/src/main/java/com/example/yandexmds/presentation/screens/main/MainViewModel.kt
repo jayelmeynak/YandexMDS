@@ -13,6 +13,9 @@ import com.example.yandexmds.domain.useCases.DeleteToDoUseCase
 import com.example.yandexmds.domain.useCases.EditToDoUseCase
 import com.example.yandexmds.domain.useCases.GetToDoItemUseCase
 import com.example.yandexmds.domain.useCases.GetToDoListUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,11 +28,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val getTaskList = GetToDoListUseCase(repository)
 
     val taskList = getTaskList.getToDoList()
-    //getTaskList.getToDoList()
 
     private val _task = MutableLiveData<ToDoItemEntity>()
     val task: LiveData<ToDoItemEntity>
         get() = _task
+
+    // Состояние для отслеживания статуса загрузки
+    private val _isTaskLoaded = MutableStateFlow(false)
+    val isTaskLoaded: StateFlow<Boolean> = _isTaskLoaded.asStateFlow()
 
     fun addTask(
         description: String,
@@ -39,23 +45,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     ) {
         if (description.isNotEmpty()) {
             val task =
-            ToDoItemEntity(
-                id = UNDEFINED_ID,
-                description = description,
-                significance = significance,
-                achievement = achievement,
-                deadline = deadline
-            )
+                ToDoItemEntity(
+                    id = UNDEFINED_ID,
+                    description = description,
+                    significance = significance,
+                    achievement = achievement,
+                    deadline = deadline
+                )
             viewModelScope.launch {
                 addTask.addToDo(task)
             }
-//            временное решение
-//            val oldList = taskList.value?.toMutableList() ?: mutableListOf()
-//            list = oldList.apply {
-//                add(task.copy(id = oldList.size))
-//            }
-//            taskList.value = list
-
         }
     }
 
@@ -65,19 +64,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             newTask = newTask.copy(achievement = !newTask.achievement)
             editTask.editToDo(newTask)
         }
-
-        // временное решение
-//        val oldList = taskList.value?.toMutableList() ?: mutableListOf()
-//        list = oldList.apply {
-//            replaceAll {
-//                if (it.id == newTask.id) {
-//                    newTask
-//                } else {
-//                    it
-//                }
-//            }
-//        }
-//        taskList.value = list
     }
 
     fun editTask(
@@ -111,7 +97,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val task = getTask.getToDo(id)
             _task.value = task
+            _isTaskLoaded.value = true
         }
+    }
+
+    fun changeLoaded(){
+        _isTaskLoaded.value = false
     }
 
     companion object {
