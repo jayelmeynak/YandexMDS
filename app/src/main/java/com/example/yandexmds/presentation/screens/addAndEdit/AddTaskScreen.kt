@@ -70,7 +70,6 @@ fun AddScreen(id: Int?, navController: NavController) {
     val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
     val task = viewModel.task.value
     var text by remember { mutableStateOf(("")) }
-    val isFocused by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val expanded = remember { mutableStateOf(false) }
     val selectedOption = remember { mutableStateOf(Significance.USUAL) }
@@ -102,36 +101,36 @@ fun AddScreen(id: Int?, navController: NavController) {
                     navController.popBackStack()
                 },
                 onSaveClickListener = {
-                    if(id == null){
-                    viewModel.addTask(
-                        description = text,
-                        significance = selectedOption.value,
-                        achievement = false,
-                        deadline =
-                        if (checked.value) {
-                            DateTimeFormatter
-                                .ofPattern("dd MMM yyyy")
-                                .format(pickedDate.value)
-                        } else {
-                            null
+                    if (id == null) {
+                        viewModel.addTask(
+                            description = text,
+                            significance = selectedOption.value,
+                            achievement = false,
+                            deadline =
+                            if (checked.value) {
+                                DateTimeFormatter
+                                    .ofPattern("dd MMM yyyy")
+                                    .format(pickedDate.value)
+                            } else {
+                                null
 
-                        })
-                    }
-                        else{
-                            viewModel.editTask(
-                                description = text,
-                                significance = selectedOption.value,
-                                achievement = false,
-                                deadline =
-                                if (checked.value) {
-                                    DateTimeFormatter
-                                        .ofPattern("dd MMM yyyy")
-                                        .format(pickedDate.value)
-                                } else {
-                                    null
+                            }
+                        )
+                    } else {
+                        viewModel.editTask(
+                            description = text,
+                            significance = selectedOption.value,
+                            achievement = false,
+                            deadline =
+                            if (checked.value) {
+                                DateTimeFormatter
+                                    .ofPattern("dd MMM yyyy")
+                                    .format(pickedDate.value)
+                            } else {
+                                null
 
-                                }
-                            )
+                            }
+                        )
                     }
                     navController.navigateUp()
                 }
@@ -158,9 +157,10 @@ fun AddScreen(id: Int?, navController: NavController) {
                     minLines = 3,
                     maxLines = 11,
                     placeholder = {
-                        if (!isFocused && text.isEmpty()) {
-                            Text(text = "Введите дело....")
-                        }
+                        Text(
+                            modifier = Modifier.padding(start = 4.dp),
+                            text = "Что надо сделать…",
+                            style = MaterialTheme.typography.bodyMedium)
                     },
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.onPrimary
@@ -169,7 +169,7 @@ fun AddScreen(id: Int?, navController: NavController) {
                     onValueChange = {
                         text = it
                     }
-                    )
+                )
 
                 RowImportance(
                     expanded = expanded,
@@ -209,10 +209,9 @@ fun AddScreen(id: Int?, navController: NavController) {
 
                 RowDelete(
                     onDeleteClickListener = {
-                        if(id == null){
+                        if (id == null) {
                             navController.navigateUp()
-                        }
-                        else{
+                        } else {
                             if (task != null) {
                                 viewModel.deleteTask(task)
                                 navController.navigateUp()
@@ -451,7 +450,7 @@ fun RowDelete(
             modifier = Modifier.padding(vertical = 12.dp),
             contentPadding = PaddingValues(0.dp),
             onClick = {
-               onDeleteClickListener()
+                onDeleteClickListener()
             }) {
             Row(
                 verticalAlignment = Alignment.CenterVertically

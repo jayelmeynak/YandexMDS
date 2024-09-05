@@ -60,8 +60,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun changeAchievement(task: ToDoItemEntity) {
-        val newTask = task.copy(achievement = !task.achievement)
         viewModelScope.launch {
+            var newTask = getTask.getToDo(task.id)
+            newTask = newTask.copy(achievement = !newTask.achievement)
             editTask.editToDo(newTask)
         }
 

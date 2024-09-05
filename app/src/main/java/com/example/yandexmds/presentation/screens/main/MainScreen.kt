@@ -21,9 +21,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -80,24 +84,39 @@ fun MainScreen(navController: NavController) {
             LazyColumn(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                items(taskList.value, key = { it.id }) { model ->
+                items(taskList.value, key = {it.id}) { model ->
+                    var checked by remember { mutableStateOf(model.achievement) }
                     val dismissState = rememberSwipeToDismissBoxState(
                         confirmValueChange = {
                             when (it) {
                                 SwipeToDismissBoxValue.StartToEnd -> {
                                     viewModel.changeAchievement(model)
+                                    checked = !checked
                                     return@rememberSwipeToDismissBoxState false
                                 }
 
                                 SwipeToDismissBoxValue.EndToStart -> {
                                     viewModel.deleteTask(model)
+                                    return@rememberSwipeToDismissBoxState false
                                 }
 
                                 SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
                             }
-                            return@rememberSwipeToDismissBoxState true
                         }
                     )
+                    LaunchedEffect(dismissState.currentValue) {
+                        when (dismissState.currentValue) {
+                            SwipeToDismissBoxValue.StartToEnd -> {
+                                viewModel.changeAchievement(model)
+                                checked = !checked
+                            }
+                            SwipeToDismissBoxValue.EndToStart -> {
+                                viewModel.deleteTask(model)
+                            }
+                            else -> {
+                            }
+                        }
+                    }
                     SwipeToDismissBox(
                         modifier = Modifier.animateItemPlacement(),
                         state = dismissState,
@@ -108,8 +127,10 @@ fun MainScreen(navController: NavController) {
                         }) {
                         TaskItem(
                             task = model,
+                            checked = checked,
                             onCheckClickListener = { task ->
                                 viewModel.changeAchievement(task)
+                                checked = !checked
                             },
                             onTaskClickListener = { task ->
                                 val id = task.id

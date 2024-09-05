@@ -18,9 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -38,6 +35,7 @@ import com.example.yandexmds.ui.theme.Red
 @Composable
 fun TaskItem(
     task: ToDoItemEntity,
+    checked: Boolean,
     onCheckClickListener: (ToDoItemEntity) -> Unit,
     onTaskClickListener: (ToDoItemEntity) -> Unit
 ) {
@@ -54,6 +52,7 @@ fun TaskItem(
     ) {
         Check(
             task = task,
+            checked = checked,
             onCheckClickListener = onCheckClickListener
         )
 
@@ -160,16 +159,18 @@ fun TaskItem(
 @Composable
 fun Check(
     task: ToDoItemEntity,
+    checked: Boolean,
     onCheckClickListener: (ToDoItemEntity) -> Unit
 ) {
-    val checked by remember { mutableStateOf(task.achievement) }
     val significance = task.significance
     Checkbox(
         modifier = Modifier
             .size(24.dp)
             .padding(3.dp),
         checked = checked,
-        onCheckedChange = { onCheckClickListener(task) },
+        onCheckedChange = {
+            onCheckClickListener(task)
+        },
         enabled = true,
         colors = CheckboxDefaults.colors().copy(
             uncheckedBorderColor = if (significance == Significance.HIGH) Red else Gray,
