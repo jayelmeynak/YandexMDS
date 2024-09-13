@@ -13,6 +13,19 @@
 
 На экране можно задать/изменить содержание задачи, изменить приоритет(Нет, Низкий, !Высокий) задачи, дедлайн. Если экран открыт в режиме редактирования, то можно удалить заметку по нажатию соответствующей кнопки. В режиме создания кнопка не активна.
 
+### Скриншоты
+
+![MainScreen 1](./screenshots/MainScreen1.jpg)
+![MainScreen 2](./screenshots/MainScreen2.jpg)
+![MainScreen 3](./screenshots/MainScreen3.jpg)
+![MainScreen 4](./screenshots/MainScreen4.jpg)
+![MainScreen 5](./screenshots/MainScreen5.jpg)
+![AddScreen 1](./screenshots/AddScreen.jpg)
+![EditScreen 1](./screenshots/AddEditScreen1.jpg)
+![EditScreen 2](./screenshots/AddEditScreen2.jpg)
+![EditScreen 3](./screenshots/AddEditScreen3.jpg)
+![EditScreen 4](./screenshots/AddEditScreen7.jpg)
+
 
 ## Стек
  - Язык: kotlin
