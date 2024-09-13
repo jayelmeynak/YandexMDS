@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -45,16 +44,14 @@ import com.example.yandexmds.ui.theme.White
 fun MainScreen(navController: NavController) {
     val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
     val taskList = viewModel.taskList.observeAsState(listOf())
-    val countCompletedTasks = remember {
-        mutableIntStateOf(0)
-    }
+    val countCompletedTasks by viewModel.countCompletedTask
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopBar(scrollBehavior, countCompletedTasks.intValue)
+            TopBar(scrollBehavior, countCompletedTasks)
         },
         floatingActionButton = {
             FloatingActionButton(
