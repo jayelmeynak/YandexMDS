@@ -1,6 +1,7 @@
 package com.example.yandexmds.presentation.screens.main
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,6 +38,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _isTaskLoaded = MutableStateFlow(false)
     val isTaskLoaded: StateFlow<Boolean> = _isTaskLoaded.asStateFlow()
 
+    val countCompletedTask = mutableStateOf(0)
+
+    init {
+        taskList.observeForever {
+            calculateCompletedTask()
+        }
+    }
+
     fun addTask(
         description: String,
         significance: Significance,
@@ -56,6 +65,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 addTask.addToDo(task)
             }
         }
+        calculateCompletedTask()
     }
 
     fun changeAchievement(task: ToDoItemEntity) {
@@ -64,6 +74,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             newTask = newTask.copy(achievement = !newTask.achievement)
             editTask.editToDo(newTask)
         }
+        calculateCompletedTask()
     }
 
     fun editTask(
@@ -85,12 +96,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
+        calculateCompletedTask()
     }
 
     fun deleteTask(task: ToDoItemEntity) {
         viewModelScope.launch {
             deleteTask.deleteToDo(task)
         }
+        calculateCompletedTask()
     }
 
     fun getTask(id: Int) {
@@ -101,7 +114,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun changeLoaded(){
+    fun calculateCompletedTask() {
+        countCompletedTask.value = 0
+        taskList.value?.forEach { task ->
+            if (task.achievement) countCompletedTask.value += 1
+        }
+    }
+
+    fun changeLoaded() {
         _isTaskLoaded.value = false
     }
 
