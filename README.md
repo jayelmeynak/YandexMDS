@@ -15,16 +15,26 @@
 
 ### Скриншоты
 
-![MainScreen 1](./screenshots/MainScreen1.jpg)
-![MainScreen 2](./screenshots/MainScreen2.jpg)
-![MainScreen 3](./screenshots/MainScreen3.jpg)
-![MainScreen 4](./screenshots/MainScreen4.jpg)
-![MainScreen 5](./screenshots/MainScreen5.jpg)
-![AddScreen 1](./screenshots/AddScreen.jpg)
-![EditScreen 1](./screenshots/AddEditScreen1.jpg)
-![EditScreen 2](./screenshots/AddEditScreen2.jpg)
-![EditScreen 3](./screenshots/AddEditScreen3.jpg)
-![EditScreen 4](./screenshots/AddEditScreen7.jpg)
+
+<img src="./screenshots/MainScreen1.jpg" alt="MainScreen 1" width="400"/>
+
+<img src="./screenshots/MainScreen2.jpg" alt="MainScreen 2" width="400"/>
+
+<img src="./screenshots/MainScreen3.jpg" alt="MainScreen 3" width="400"/>
+
+<img src="./screenshots/MainScreen4.jpg" alt="MainScreen 4" width="400"/>
+
+<img src="./screenshots/MainScreen5.jpg" alt="MainScreen 5" width="400"/>
+
+<img src="./screenshots/AddScreen.jpg" alt="AddScreen" width="400"/>
+
+<img src="./screenshots/AddEditScreen1.jpg" alt="EditScreen 1" width="400"/>
+
+<img src="./screenshots/AddEditScreen2.jpg" alt="EditScreen 2" width="400"/>
+
+<img src="./screenshots/AddEditScreen3.jpg" alt="EditScreen 3" width="400"/>
+
+<img src="./screenshots/AddEditScreen7.jpg" alt="EditScreen 4" width="400"/>
 
 
 ## Стек
