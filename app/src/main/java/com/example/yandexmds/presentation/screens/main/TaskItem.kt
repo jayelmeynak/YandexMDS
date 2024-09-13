@@ -43,10 +43,10 @@ fun TaskItem(
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.secondary)
-            .padding(vertical = 12.dp)
             .clickable {
                 onTaskClickListener(task)
-            },
+            }
+            .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
