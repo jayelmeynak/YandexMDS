@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
@@ -27,6 +28,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,12 +45,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -59,6 +61,7 @@ import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.DarkOverlayColor
 import com.example.yandexmds.ui.theme.Gray
 import com.example.yandexmds.ui.theme.Red
+import com.example.yandexmds.ui.theme.White
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
@@ -75,7 +78,7 @@ fun AddScreen(id: Int?, navController: NavController) {
     val task = viewModel.task.observeAsState()
     val isTaskLoaded by viewModel.isTaskLoaded.collectAsState()
 
-    var text by remember { mutableStateOf(("")) }
+    var text by rememberSaveable { mutableStateOf(("")) }
     val scrollState = rememberScrollState()
     val expanded = remember { mutableStateOf(false) }
     val selectedOption = remember { mutableStateOf(Significance.USUAL) }
@@ -94,7 +97,7 @@ fun AddScreen(id: Int?, navController: NavController) {
     }
 
     LaunchedEffect(isTaskLoaded) {
-        if (isTaskLoaded) {
+        if (isTaskLoaded && text.isEmpty()) {
             viewModel.task.value?.let { task ->
                 text = task.description
                 selectedOption.value = task.significance
@@ -150,6 +153,53 @@ fun AddScreen(id: Int?, navController: NavController) {
                     navController.navigateUp()
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                modifier = Modifier.size(56.dp),
+                shape = CircleShape,
+                containerColor = Blue,
+                onClick = {
+                    if (id == null) {
+                        viewModel.addTask(
+                            description = text,
+                            significance = selectedOption.value,
+                            achievement = false,
+                            deadline =
+                            if (checked.value) {
+                                DateTimeFormatter
+                                    .ofPattern("dd MMM yyyy")
+                                    .format(pickedDate.value)
+                            } else {
+                                null
+
+                            }
+                        )
+                    } else {
+                        viewModel.editTask(
+                            description = text,
+                            significance = selectedOption.value,
+                            achievement = false,
+                            deadline =
+                            if (checked.value) {
+                                DateTimeFormatter
+                                    .ofPattern("dd MMM yyyy")
+                                    .format(pickedDate.value)
+                            } else {
+                                null
+
+                            }
+                        )
+                    }
+                    navController.navigateUp()
+                }) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.check),
+                    contentDescription = null,
+                    tint = White
+                )
+            }
         }
     ) { innerPadding ->
         Box(
@@ -175,7 +225,8 @@ fun AddScreen(id: Int?, navController: NavController) {
                         Text(
                             modifier = Modifier.padding(start = 4.dp),
                             text = "Что надо сделать…",
-                            style = MaterialTheme.typography.bodyMedium)
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     },
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.onPrimary
@@ -223,6 +274,7 @@ fun AddScreen(id: Int?, navController: NavController) {
                 )
 
                 RowDelete(
+                    id = id,
                     onDeleteClickListener = {
                         if (id == null) {
                             navController.navigateUp()
@@ -245,7 +297,6 @@ fun RowImportance(
     expanded: MutableState<Boolean>,
     selectedOption: MutableState<Significance>
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -257,18 +308,35 @@ fun RowImportance(
             modifier = Modifier
                 .padding(vertical = 16.dp)
         ) {
-            Box {
-                TextButton(
-                    onClick = { expanded.value = true },
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        text = "Важность",
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                    )
-                }
+            Text(
+                text = "Важность",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.onPrimary
+                ),
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Box(
+                modifier = Modifier.align(Alignment.Start)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .clickable {
+                            expanded.value = true
+                        },
+                    text =
+                    when (selectedOption.value) {
+                        Significance.LOW -> "Низкий"
+                        Significance.HIGH -> "!Высокий"
+                        Significance.USUAL -> "Нет"
+                    },
+                    style = MaterialTheme.typography.titleSmall,
+                    color = if (selectedOption.value == Significance.HIGH) {
+                        Red
+                    } else {
+                        MaterialTheme.colorScheme.onTertiary
+                    }
+                )
                 DropMenu(
                     expanded = expanded.value,
                     onSelectedClickListener = {
@@ -279,21 +347,6 @@ fun RowImportance(
                     }
                 )
             }
-            Text(
-                text =
-                when (selectedOption.value) {
-                    Significance.LOW -> "Низкий"
-                    Significance.HIGH -> "!Высокий"
-                    Significance.USUAL -> "Нет"
-                },
-                style = MaterialTheme.typography.titleSmall,
-                color = if (selectedOption.value == Significance.HIGH) {
-                    Red
-                } else {
-                    MaterialTheme.colorScheme.onTertiary
-                }
-            )
-
         }
 
         if (selectedOption.value == Significance.HIGH) {
@@ -317,7 +370,6 @@ fun DropMenu(
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = { onDismissClickListener(false) },
-        offset = DpOffset(0.dp, (-36).dp),
         modifier = Modifier.background(MaterialTheme.colorScheme.tertiary)
     ) {
         DropdownMenuItem(
@@ -454,6 +506,7 @@ fun RowDate(
 
 @Composable
 fun RowDelete(
+    id: Int?,
     onDeleteClickListener: () -> Unit
 ) {
     Box(
@@ -462,6 +515,7 @@ fun RowDelete(
             .padding(vertical = 12.dp)
     ) {
         TextButton(
+            enabled = if (id == null) false else true,
             modifier = Modifier.padding(vertical = 12.dp),
             contentPadding = PaddingValues(0.dp),
             onClick = {
@@ -474,15 +528,15 @@ fun RowDelete(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.Filled.Delete,
                     contentDescription = null,
-                    tint = Red
+                    tint = if (id == null) Gray else Red
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     modifier = Modifier.clickable {
-                        /*TODO*/
+                        onDeleteClickListener()
                     },
                     text = "Удалить",
-                    style = MaterialTheme.typography.bodyMedium.copy(color = Red)
+                    style = MaterialTheme.typography.bodyMedium.copy(color = if (id == null) Gray else Red)
                 )
             }
         }
