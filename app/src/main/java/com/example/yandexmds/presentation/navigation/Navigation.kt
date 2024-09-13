@@ -1,5 +1,7 @@
 package com.example.yandexmds.presentation.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -13,7 +15,22 @@ import com.example.yandexmds.presentation.screens.main.MainScreen
 fun Navigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.Main.route) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Main.route,
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                tween(500)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                tween(500)
+            )
+        }
+    ) {
         composable(Screen.Main.route) {
             MainScreen(navController = navController)
         }
