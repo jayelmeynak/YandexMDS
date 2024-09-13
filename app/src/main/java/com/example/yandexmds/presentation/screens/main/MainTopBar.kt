@@ -1,6 +1,7 @@
 package com.example.yandexmds.presentation.screens.main
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -28,32 +29,29 @@ fun TopBar(scrollBehavior: TopAppBarScrollBehavior, countCompletedTasks: Int) {
             containerColor = MaterialTheme.colorScheme.primary
         ),
         title = {
-            Column {
-                Text(
-                    //modifier = Modifier.padding(top = 82.dp, start = 60.dp, bottom = 4.dp),
-                    text = "Мои дела",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+            Row {
+                Column(modifier = Modifier.weight(2F)) {
+                    Text(
+                        text = "Мои дела",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    //modifier = Modifier.padding(start = 60.dp),
-                    text = "Выполнено - $countCompletedTasks",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        },
-        actions = {
-            IconButton(
-                //modifier = Modifier.padding(end = 24.dp),
-                onClick = { /*TODO*/ }) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = R.drawable.visibility),
-                    contentDescription = null,
-                    tint = Blue
-                )
+                    Text(
+                        text = "Выполнено - $countCompletedTasks",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                IconButton(
+                    onClick = { /*TODO*/ }) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(id = R.drawable.visibility),
+                        contentDescription = null,
+                        tint = Blue
+                    )
+                }
             }
         },
         scrollBehavior = scrollBehavior
