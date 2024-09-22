@@ -24,4 +24,7 @@ interface ToDoListDao {
 
     @Query("SELECT * FROM ToDoItemDBO")
     fun getToDoList(): LiveData<List<ToDoItemDBO>>
+
+    @Query("SELECT * FROM ToDoItemDBO WHERE achievement = 0")
+    fun getToDoListFilteredByAchievement(): LiveData<List<ToDoItemDBO>>
 }

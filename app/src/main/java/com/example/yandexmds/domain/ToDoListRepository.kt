@@ -8,5 +8,6 @@ interface ToDoListRepository {
     suspend fun deleteToDo(item: ToDoItemEntity)
     suspend fun editToDo(item: ToDoItemEntity)
     suspend fun getToDo(id: Int): ToDoItemEntity
+    fun getToDoListFilteredByAchievement(): LiveData<List<ToDoItemEntity>>
     fun getToDoList(): LiveData<List<ToDoItemEntity>>
 }

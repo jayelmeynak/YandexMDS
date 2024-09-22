@@ -22,7 +22,12 @@ import com.example.yandexmds.ui.theme.Blue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(scrollBehavior: TopAppBarScrollBehavior, countCompletedTasks: Int) {
+fun TopBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    countCompletedTasks: Int,
+    filter: Boolean,
+    onVisibilityClick: () -> Unit
+) {
 
     LargeTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -44,10 +49,10 @@ fun TopBar(scrollBehavior: TopAppBarScrollBehavior, countCompletedTasks: Int) {
                     )
                 }
                 IconButton(
-                    onClick = { /*TODO*/ }) {
+                    onClick = { onVisibilityClick() }) {
                     Icon(
                         modifier = Modifier.size(24.dp),
-                        painter = painterResource(id = R.drawable.visibility),
+                        painter = painterResource(id = if(!filter) R.drawable.visibility else R.drawable.visibility_off),
                         contentDescription = null,
                         tint = Blue
                     )

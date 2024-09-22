@@ -43,7 +43,11 @@ import com.example.yandexmds.ui.theme.White
 @Composable
 fun MainScreen(navController: NavController) {
     val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
-    val taskList = viewModel.taskList.observeAsState(listOf())
+    val isFilter by viewModel.isFilter.observeAsState(false)
+    val taskList =
+        (if (isFilter) viewModel.filterTasksList else viewModel.allTasksList).observeAsState(
+            listOf()
+        )
     val countCompletedTasks by viewModel.countCompletedTask
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -51,7 +55,14 @@ fun MainScreen(navController: NavController) {
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopBar(scrollBehavior, countCompletedTasks)
+            TopBar(
+                scrollBehavior,
+                countCompletedTasks,
+                isFilter,
+                onVisibilityClick = {
+                    viewModel.changeFilter()
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -81,7 +92,7 @@ fun MainScreen(navController: NavController) {
             LazyColumn(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                items(taskList.value, key = {it.id}) { model ->
+                items(taskList.value, key = { it.id }) { model ->
                     var checked by remember { mutableStateOf(model.achievement) }
                     val dismissState = rememberSwipeToDismissBoxState(
                         confirmValueChange = {
@@ -107,9 +118,11 @@ fun MainScreen(navController: NavController) {
                                 viewModel.changeAchievement(model)
                                 checked = !checked
                             }
+
                             SwipeToDismissBoxValue.EndToStart -> {
                                 viewModel.deleteTask(model)
                             }
+
                             else -> {
                             }
                         }

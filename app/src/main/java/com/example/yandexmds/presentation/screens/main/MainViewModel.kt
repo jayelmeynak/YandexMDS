@@ -13,6 +13,7 @@ import com.example.yandexmds.domain.useCases.AddToDoUseCase
 import com.example.yandexmds.domain.useCases.DeleteToDoUseCase
 import com.example.yandexmds.domain.useCases.EditToDoUseCase
 import com.example.yandexmds.domain.useCases.GetToDoItemUseCase
+import com.example.yandexmds.domain.useCases.GetToDoListFilterByAchievementUseCase
 import com.example.yandexmds.domain.useCases.GetToDoListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,8 +30,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val deleteTask = DeleteToDoUseCase(repository)
     private val getTask = GetToDoItemUseCase(repository)
     private val getTaskList = GetToDoListUseCase(repository)
+    private val getTaskListFilterByAchievement = GetToDoListFilterByAchievementUseCase(repository)
 
-    val taskList = getTaskList.getToDoList()
+    val allTasksList = getTaskList.getToDoList()
+    val filterTasksList = getTaskListFilterByAchievement.getFilteredTaskList()
+
+    private val _isFilter = MutableLiveData<Boolean>(false)
+    val isFilter: LiveData<Boolean>
+        get() = _isFilter
 
     private val _task = MutableLiveData<ToDoItemEntity>()
     val task: LiveData<ToDoItemEntity>
@@ -43,7 +50,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val countCompletedTask = mutableStateOf(0)
 
     init {
-        taskList.observeForever {
+        allTasksList.observeForever {
             calculateCompletedTask()
         }
     }
@@ -125,9 +132,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun changeFilter() {
+        _isFilter.value?.let {
+            _isFilter.value = !it
+        }
+    }
+
     fun calculateCompletedTask() {
         countCompletedTask.value = 0
-        taskList.value?.forEach { task ->
+        allTasksList.value?.forEach { task ->
             if (task.achievement) countCompletedTask.value += 1
         }
     }

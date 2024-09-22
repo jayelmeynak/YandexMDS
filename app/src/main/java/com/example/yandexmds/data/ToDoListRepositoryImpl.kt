@@ -26,6 +26,14 @@ class ToDoListRepositoryImpl(application: Application) : ToDoListRepository {
         return mapper.mapDBModelToEntity(toDoListDao.getToDoItem(id))
     }
 
+    override fun getToDoListFilteredByAchievement(): LiveData<List<ToDoItemEntity>> {
+        return toDoListDao.getToDoListFilteredByAchievement().map { list ->
+            list.map { item ->
+                mapper.mapDBModelToEntity(item)
+            }
+        }
+    }
+
     override fun getToDoList(): LiveData<List<ToDoItemEntity>> {
         return toDoListDao.getToDoList().map { list ->
             list.map { item ->
