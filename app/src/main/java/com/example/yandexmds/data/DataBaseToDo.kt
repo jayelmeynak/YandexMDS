@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ToDoItemDBO::class], version = 1)
+@Database(entities = [ToDoItemDBO::class], version = 3)
 abstract class DataBaseToDo: RoomDatabase() {
     abstract fun toDoListDao(): ToDoListDao
 
@@ -24,7 +24,9 @@ abstract class DataBaseToDo: RoomDatabase() {
                 }
                 val db = Room.databaseBuilder(application,
                     DataBaseToDo::class.java,
-                    DB_NAME).build()
+                    DB_NAME)
+                    .addMigrations(MIGRATION_2_3)
+                    .build()
                 INSTANCE = db
                 return db
             }

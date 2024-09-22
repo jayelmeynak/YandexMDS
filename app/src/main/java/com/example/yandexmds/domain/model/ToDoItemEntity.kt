@@ -5,5 +5,7 @@ data class ToDoItemEntity(
     val description: String,
     val significance: Significance = Significance.USUAL,
     val achievement: Boolean,
+    val created: String,
+    val edited: String,
     val deadline: String?
 )

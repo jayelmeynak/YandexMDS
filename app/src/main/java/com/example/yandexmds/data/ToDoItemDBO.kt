@@ -10,5 +10,7 @@ data class ToDoItemDBO(
     val description: String,
     val significance: Significance = Significance.USUAL,
     val achievement: Boolean,
+    val created: Long,
+    val edited: Long,
     val deadline: String?
 )

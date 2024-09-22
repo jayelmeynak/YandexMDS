@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -53,12 +55,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         deadline: String?
     ) {
         if (description.isNotEmpty()) {
+            val currentDateTime = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
+            val formattedDateTime = currentDateTime.format(formatter)
             val task =
                 ToDoItemEntity(
                     id = UNDEFINED_ID,
                     description = description,
                     significance = significance,
                     achievement = achievement,
+                    created = formattedDateTime,
+                    edited = "",
                     deadline = deadline
                 )
             viewModelScope.launch {
@@ -84,11 +91,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         deadline: String?
     ) {
         if (description.isNotEmpty()) {
+            val currentDateTime = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
+            val formattedDateTime = currentDateTime.format(formatter)
             _task.value?.let {
                 val task = it.copy(
                     description = description,
                     significance = significance,
                     achievement = achievement,
+                    edited = formattedDateTime,
                     deadline = deadline
                 )
                 viewModelScope.launch {
