@@ -39,3 +39,33 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
     }
 }
 
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("""
+            ALTER TABLE ToDoItemDBO 
+            RENAME TO ToDoItemDBO_temp;
+        """.trimIndent())
+
+        db.execSQL("""
+            CREATE TABLE IF NOT EXISTS ToDoItemDBO (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+                description TEXT NOT NULL, 
+                significance TEXT NOT NULL, 
+                achievement INTEGER NOT NULL, 
+                created INTEGER NOT NULL, 
+                edited INTEGER, 
+                deadline TEXT
+            );
+        """.trimIndent())
+
+        db.execSQL("""
+            INSERT INTO ToDoItemDBO (id, description, significance, achievement, created, edited, deadline)
+            SELECT id, description, significance, achievement, created, edited, deadline
+            FROM ToDoItemDBO_temp;
+        """.trimIndent())
+
+        db.execSQL("DROP TABLE ToDoItemDBO_temp;")
+    }
+}
+
+

@@ -72,7 +72,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     significance = significance,
                     achievement = achievement,
                     created = formattedDateTime,
-                    edited = "",
+                    edited = null,
                     deadline = deadline
                 )
             viewModelScope.launch {

@@ -15,7 +15,7 @@ class Mapper {
             significance = item.significance,
             achievement = item.achievement,
             created = mapTimeMillisToLocalDateTime(item.created),
-            edited = mapTimeMillisToLocalDateTime(item.edited),
+            edited = if (item.edited != null) mapTimeMillisToLocalDateTime(item.edited) else null,
             deadline = item.deadline
         )
     }
@@ -27,7 +27,7 @@ class Mapper {
             significance = item.significance,
             achievement = item.achievement,
             created = mapLocalDateTimeToTimesMillis(item.created),
-            edited = mapLocalDateTimeToTimesMillis(item.edited),
+            edited = if (item.edited != null) mapLocalDateTimeToTimesMillis(item.edited) else null,
             deadline = item.deadline
         )
     }
@@ -40,7 +40,7 @@ class Mapper {
         return formattedDate
     }
 
-    fun mapLocalDateTimeToTimesMillis(formattedDate: String): Long{
+    fun mapLocalDateTimeToTimesMillis(formattedDate: String): Long {
         val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
         val parsedDateTime = LocalDateTime.parse(formattedDate, formatter)
         val millis = parsedDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()

@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -73,10 +74,13 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 @Composable
 fun AddScreen(id: Int?, navController: NavController) {
@@ -96,6 +100,10 @@ fun AddScreen(id: Int?, navController: NavController) {
         mutableStateOf<LocalDate?>(null)
     }
 
+    val pickedTime = remember {
+        mutableStateOf<LocalTime>(LocalTime.NOON)
+    }
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
@@ -113,7 +121,9 @@ fun AddScreen(id: Int?, navController: NavController) {
                 selectedOption.value = task.significance
                 val deadline = task.deadline
                 if (deadline != null) {
-                    pickedDate.value = stringToLocalDate(deadline)
+                    val dateTime = stringToLocalDateTime(deadline)
+                    pickedDate.value = dateTime.toLocalDate()
+                    pickedTime.value = dateTime.toLocalTime()
                     checked.value = true
                 }
             }
@@ -122,6 +132,7 @@ fun AddScreen(id: Int?, navController: NavController) {
     }
 
     val dateDialogState = rememberMaterialDialogState()
+    val timeDialogState = rememberMaterialDialogState()
     Scaffold(
         topBar = {
             AddTopBar(
@@ -129,16 +140,20 @@ fun AddScreen(id: Int?, navController: NavController) {
                     navController.popBackStack()
                 },
                 onSaveClickListener = {
+
                     if (id == null) {
+
                         viewModel.addTask(
                             description = text,
                             significance = selectedOption.value,
                             achievement = false,
                             deadline =
                             if (checked.value) {
-                                DateTimeFormatter
-                                    .ofPattern("dd MMM yyyy")
-                                    .format(pickedDate.value)
+                                val formattedDateTime = pickedDate.value?.let { date ->
+                                    val dateTime = LocalDateTime.of(date, pickedTime.value)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                }
+                                formattedDateTime
                             } else {
                                 null
 
@@ -151,9 +166,11 @@ fun AddScreen(id: Int?, navController: NavController) {
                             achievement = false,
                             deadline =
                             if (checked.value) {
-                                DateTimeFormatter
-                                    .ofPattern("dd MMM yyyy")
-                                    .format(pickedDate.value)
+                                val formattedDateTime = pickedDate.value?.let { date ->
+                                    val dateTime = LocalDateTime.of(date, pickedTime.value)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                }
+                                formattedDateTime
                             } else {
                                 null
 
@@ -177,9 +194,11 @@ fun AddScreen(id: Int?, navController: NavController) {
                             achievement = false,
                             deadline =
                             if (checked.value) {
-                                DateTimeFormatter
-                                    .ofPattern("dd MMM yyyy")
-                                    .format(pickedDate.value)
+                                val formattedDateTime = pickedDate.value?.let { date ->
+                                    val dateTime = LocalDateTime.of(date, pickedTime.value)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                }
+                                formattedDateTime
                             } else {
                                 null
 
@@ -192,9 +211,11 @@ fun AddScreen(id: Int?, navController: NavController) {
                             achievement = false,
                             deadline =
                             if (checked.value) {
-                                DateTimeFormatter
-                                    .ofPattern("dd MMM yyyy")
-                                    .format(pickedDate.value)
+                                val formattedDateTime = pickedDate.value?.let { date ->
+                                    val dateTime = LocalDateTime.of(date, pickedTime.value)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                }
+                                formattedDateTime
                             } else {
                                 null
 
@@ -225,7 +246,7 @@ fun AddScreen(id: Int?, navController: NavController) {
                     .padding(horizontal = 16.dp)
                     .pointerInput(Unit) {
                         detectTapGestures(
-                            onTap  = {
+                            onTap = {
                                 focusManager.clearFocus()
                                 keyboardController?.show()
                             }
@@ -276,6 +297,8 @@ fun AddScreen(id: Int?, navController: NavController) {
                 RowDate(
                     pickedDate = pickedDate,
                     dateDialogState = dateDialogState,
+                    pickedTime = pickedTime,
+                    timeDialogState = timeDialogState,
                     checked = checked
                 )
 
@@ -424,7 +447,9 @@ fun DropMenu(
 fun RowDate(
     pickedDate: MutableState<LocalDate?>,
     dateDialogState: MaterialDialogState,
-    checked: MutableState<Boolean>
+    checked: MutableState<Boolean>,
+    pickedTime: MutableState<LocalTime>,
+    timeDialogState: MaterialDialogState
 ) {
 
     Row(
@@ -468,6 +493,24 @@ fun RowDate(
                     text = DateTimeFormatter
                         .ofPattern("dd MMM yyyy")
                         .format(pickedDate.value)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    modifier = Modifier.clickable {
+                        timeDialogState.show()
+                    },
+                    style = MaterialTheme.typography.labelMedium,
+                    color =
+                    if (checked.value) {
+                        Blue
+                    } else {
+                        Gray
+                    },
+                    text = DateTimeFormatter
+                        .ofPattern("HH:mm")
+                        .format(pickedTime.value)
                 )
             }
         }
@@ -522,6 +565,35 @@ fun RowDate(
                 }
             ) {
                 pickedDate.value = it
+            }
+        }
+
+        MaterialDialog(
+            dialogState = timeDialogState,
+            buttons = {
+                positiveButton(
+                    text = "Готово",
+                    textStyle = MaterialTheme.typography.labelMedium.copy(color = Blue)
+                ) {
+                    checked.value = true
+                }
+                negativeButton(
+                    text = "Отмена",
+                    textStyle = MaterialTheme.typography.labelMedium.copy(color = Blue)
+                ) {
+                    pickedTime.value = LocalTime.NOON
+                }
+            }
+        ) {
+            timepicker(
+                initialTime = LocalTime.NOON,
+                is24HourClock = true,
+                colors = TimePickerDefaults.colors(
+                    selectorColor = Blue,
+                    activeBackgroundColor = Blue
+                )
+            ) {
+                pickedTime.value = it
             }
         }
 
@@ -588,7 +660,9 @@ fun AddTopBar(
             }
         },
         actions = {
-            Button(onClick = {
+            Button(
+                colors = ButtonDefaults.buttonColors().copy(containerColor = MaterialTheme.colorScheme.background),
+                onClick = {
                 onSaveClickListener()
             }) {
                 Text(text = "Сохранить", color = Blue, style = MaterialTheme.typography.titleSmall)
@@ -598,7 +672,7 @@ fun AddTopBar(
     )
 }
 
-fun stringToLocalDate(dateString: String): LocalDate {
-    val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale("ru"))
-    return LocalDate.parse(dateString, formatter)
+fun stringToLocalDateTime(deadline: String): LocalDateTime {
+    val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
+    return LocalDateTime.parse(deadline, formatter)
 }
