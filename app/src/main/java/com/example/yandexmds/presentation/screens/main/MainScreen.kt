@@ -38,6 +38,10 @@ import com.example.yandexmds.R
 import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.White
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -50,6 +54,7 @@ fun MainScreen(navController: NavController) {
         )
     val countCompletedTasks by viewModel.countCompletedTask
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    var isTaskClickEnabled by remember { mutableStateOf(true) }
 
 
     Scaffold(
@@ -70,7 +75,14 @@ fun MainScreen(navController: NavController) {
                 shape = CircleShape,
                 containerColor = Blue,
                 onClick = {
-                    navController.navigate(Screen.Add.route)
+                    if (isTaskClickEnabled) {
+                        isTaskClickEnabled = false
+                        navController.navigate(Screen.Add.route)
+                        CoroutineScope(Dispatchers.Main).launch {
+                            delay(3000)
+                            isTaskClickEnabled = true
+                        }
+                    }
                 }) {
                 Icon(
                     modifier = Modifier.size(24.dp),
@@ -143,8 +155,16 @@ fun MainScreen(navController: NavController) {
                                 checked = !checked
                             },
                             onTaskClickListener = { task ->
-                                val id = task.id
-                                navController.navigate(Screen.Edit.route + "/$id")
+                                if (isTaskClickEnabled) {
+                                    isTaskClickEnabled = false
+                                    val id = task.id
+                                    navController.navigate(Screen.Edit.route + "/$id")
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        delay(3000)
+                                        isTaskClickEnabled = true
+                                    }
+                                }
+
                             }
                         )
                     }
