@@ -48,6 +48,7 @@ fun MainScreen(navController: NavController) {
         (if (isFilter) viewModel.filterTasksList else viewModel.allTasksList).observeAsState(
             listOf()
         )
+    val addScreenOpening = remember { mutableStateOf(false) }
     val countCompletedTasks by viewModel.countCompletedTask
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -70,7 +71,10 @@ fun MainScreen(navController: NavController) {
                 shape = CircleShape,
                 containerColor = Blue,
                 onClick = {
-                    navController.navigate(Screen.Add.route)
+                    if(!addScreenOpening.value) {
+                        addScreenOpening.value = true
+                        navController.navigate(Screen.Add.route)
+                    }
                 }) {
                 Icon(
                     modifier = Modifier.size(24.dp),

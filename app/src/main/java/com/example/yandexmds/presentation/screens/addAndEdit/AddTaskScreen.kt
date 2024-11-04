@@ -151,7 +151,8 @@ fun AddScreen(id: Int?, navController: NavController) {
                             if (checked.value) {
                                 val formattedDateTime = pickedDate.value?.let { date ->
                                     val dateTime = LocalDateTime.of(date, pickedTime.value)
-                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
+                                        .format(dateTime)
                                 }
                                 formattedDateTime
                             } else {
@@ -168,7 +169,8 @@ fun AddScreen(id: Int?, navController: NavController) {
                             if (checked.value) {
                                 val formattedDateTime = pickedDate.value?.let { date ->
                                     val dateTime = LocalDateTime.of(date, pickedTime.value)
-                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
+                                        .format(dateTime)
                                 }
                                 formattedDateTime
                             } else {
@@ -196,7 +198,8 @@ fun AddScreen(id: Int?, navController: NavController) {
                             if (checked.value) {
                                 val formattedDateTime = pickedDate.value?.let { date ->
                                     val dateTime = LocalDateTime.of(date, pickedTime.value)
-                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
+                                        .format(dateTime)
                                 }
                                 formattedDateTime
                             } else {
@@ -213,7 +216,8 @@ fun AddScreen(id: Int?, navController: NavController) {
                             if (checked.value) {
                                 val formattedDateTime = pickedDate.value?.let { date ->
                                     val dateTime = LocalDateTime.of(date, pickedTime.value)
-                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm").format(dateTime)
+                                    DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")
+                                        .format(dateTime)
                                 }
                                 formattedDateTime
                             } else {
@@ -363,14 +367,15 @@ fun RowImportance(
                 modifier = Modifier.align(Alignment.Start)
             )
             Box(
-                modifier = Modifier.align(Alignment.Start)
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .clickable {
+                        expanded.value = true
+                    }
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(top = 4.dp)
-                        .clickable {
-                            expanded.value = true
-                        },
+                        .padding(top = 4.dp),
                     text =
                     when (selectedOption.value) {
                         Significance.LOW -> "Низкий"
@@ -661,10 +666,11 @@ fun AddTopBar(
         },
         actions = {
             Button(
-                colors = ButtonDefaults.buttonColors().copy(containerColor = MaterialTheme.colorScheme.background),
+                colors = ButtonDefaults.buttonColors()
+                    .copy(containerColor = MaterialTheme.colorScheme.background),
                 onClick = {
-                onSaveClickListener()
-            }) {
+                    onSaveClickListener()
+                }) {
                 Text(text = "Сохранить", color = Blue, style = MaterialTheme.typography.titleSmall)
             }
         },
