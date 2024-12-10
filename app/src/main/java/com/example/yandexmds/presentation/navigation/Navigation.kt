@@ -17,6 +17,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.yandexmds.presentation.screens.addAndEdit.AddEditTaskScreen
 import com.example.yandexmds.presentation.screens.main.TaskMainScreen
+import com.example.yandexmds.presentation.screens.schedule.AddEditScheduleScreen
+import com.example.yandexmds.presentation.screens.schedule.ScheduleMainScreen
 
 @Composable
 fun Navigation() {
@@ -81,9 +83,17 @@ fun Navigation() {
             }
         }
         composable(Screen.ROUTE_SCHEDULE_MAIN) {
-            AddEditTaskScreen(
-                id = null,
+            ScheduleMainScreen(
                 navController = navController,
+                selectedItem = selectedItem,
+                navigationItems = items,
+                unselectedNavigationIcons = unselectedIcons,
+                selectedNavigationIcons = selectedIcons
+            )
+        }
+        composable(Screen.ROUTE_SCHEDULE_ADD) {
+            AddEditScheduleScreen(
+                id = null, navController = navController,
                 selectedItem = selectedItem,
                 navigationItems = items,
                 unselectedNavigationIcons = unselectedIcons,
