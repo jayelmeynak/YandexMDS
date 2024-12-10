@@ -12,6 +12,9 @@ interface ScheduleDao {
     @Query("SELECT * FROM ScheduleItemDBO")
     fun getAllScheduleItems(): LiveData<List<ScheduleItemDBO>>
 
+    @Query("SELECT * FROM ScheduleItemDBO WHERE id = :id")
+    suspend fun getScheduleItem(id: Int): ScheduleItemDBO
+
     @Insert
     suspend fun insertScheduleItem(scheduleItem: ScheduleItemDBO)
 
