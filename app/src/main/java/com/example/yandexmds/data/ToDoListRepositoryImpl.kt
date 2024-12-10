@@ -3,7 +3,7 @@ package com.example.yandexmds.data
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.example.yandexmds.domain.ToDoListRepository
+import com.example.yandexmds.domain.repository.ToDoListRepository
 import com.example.yandexmds.domain.model.ToDoItemEntity
 
 class ToDoListRepositoryImpl(application: Application) : ToDoListRepository {

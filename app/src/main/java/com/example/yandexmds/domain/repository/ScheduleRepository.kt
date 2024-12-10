@@ -1,4 +1,4 @@
-package com.example.yandexmds.domain.useCases.schedule
+package com.example.yandexmds.domain.repository
 
 import androidx.lifecycle.LiveData
 import com.example.yandexmds.domain.model.ScheduleItemEntity
