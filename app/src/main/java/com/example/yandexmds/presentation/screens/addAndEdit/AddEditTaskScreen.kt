@@ -26,21 +26,16 @@ import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PriorityHigh
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -65,6 +60,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.Significance
+import com.example.yandexmds.presentation.AddTopBar
 import com.example.yandexmds.presentation.navigation.BottomNavigationBar
 import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.presentation.screens.main.MainViewModel
@@ -667,40 +663,6 @@ fun RowDelete(
             }
         }
     }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AddTopBar(
-    onCancelClickListener: () -> Unit,
-    onSaveClickListener: () -> Unit
-) {
-    TopAppBar(
-        navigationIcon = {
-            IconButton(onClick = {
-                onCancelClickListener()
-            }) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = R.drawable.close),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        },
-        actions = {
-            Button(
-                colors = ButtonDefaults.buttonColors()
-                    .copy(containerColor = MaterialTheme.colorScheme.background),
-                onClick = {
-                    onSaveClickListener()
-                }) {
-                Text(text = "Сохранить", color = Blue, style = MaterialTheme.typography.titleSmall)
-            }
-        },
-        title = { }
-    )
 }
 
 fun stringToLocalDateTime(deadline: String): LocalDateTime {
