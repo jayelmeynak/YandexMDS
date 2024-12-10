@@ -12,5 +12,7 @@ data class ToDoItemDBO(
     val achievement: Boolean,
     val created: Long,
     val edited: Long?,
-    val deadline: String?
+    val deadline: String?,
+    val scheduleId: Long?,
+
 )

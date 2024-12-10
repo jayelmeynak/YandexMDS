@@ -73,7 +73,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     achievement = achievement,
                     created = formattedDateTime,
                     edited = null,
-                    deadline = deadline
+                    deadline = deadline,
+                    scheduleId = null
                 )
             viewModelScope.launch {
                 addTask.addToDo(task)

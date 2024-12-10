@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ToDoItemDBO::class], version = 4)
+@Database(entities = [ToDoItemDBO::class, ScheduleItemDBO::class], version = 6)
 abstract class DataBaseToDo: RoomDatabase() {
     abstract fun toDoListDao(): ToDoListDao
+    abstract fun scheduleDao(): ScheduleDao
 
     companion object{
         private var INSTANCE: DataBaseToDo? = null
@@ -25,7 +26,7 @@ abstract class DataBaseToDo: RoomDatabase() {
                 val db = Room.databaseBuilder(application,
                     DataBaseToDo::class.java,
                     DB_NAME)
-                    .addMigrations(MIGRATION_3_4)
+                    .addMigrations(MIGRATION_5_6)
                     .build()
                 INSTANCE = db
                 return db

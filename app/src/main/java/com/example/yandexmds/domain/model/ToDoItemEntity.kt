@@ -7,5 +7,6 @@ data class ToDoItemEntity(
     val achievement: Boolean,
     val created: String,
     val edited: String?,
-    val deadline: String?
+    val deadline: String?,
+    val scheduleId: Long?,
 )

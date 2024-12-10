@@ -1,5 +1,6 @@
 package com.example.yandexmds.data
 
+import com.example.yandexmds.domain.model.ScheduleItemEntity
 import com.example.yandexmds.domain.model.ToDoItemEntity
 import java.time.Instant
 import java.time.LocalDateTime
@@ -16,7 +17,21 @@ class Mapper {
             achievement = item.achievement,
             created = mapTimeMillisToLocalDateTime(item.created),
             edited = if (item.edited != null) mapTimeMillisToLocalDateTime(item.edited) else null,
-            deadline = item.deadline
+            deadline = item.deadline,
+            scheduleId = item.scheduleId
+        )
+    }
+
+    fun mapDBModelToEntity(item: ScheduleItemDBO): ScheduleItemEntity {
+        return ScheduleItemEntity(
+            id = item.id,
+            subject = item.subject,
+            dayOfWeek = item.dayOfWeek,
+            startTime = item.startTime,
+            endTime = item.endTime,
+            teacher = item.teacher,
+            room = item.room,
+            color = item.color
         )
     }
 
@@ -28,7 +43,21 @@ class Mapper {
             achievement = item.achievement,
             created = mapLocalDateTimeToTimesMillis(item.created),
             edited = if (item.edited != null) mapLocalDateTimeToTimesMillis(item.edited) else null,
-            deadline = item.deadline
+            deadline = item.deadline,
+            scheduleId = item.scheduleId
+        )
+    }
+
+    fun mapEntityToDBModel(item: ScheduleItemEntity): ScheduleItemDBO {
+        return ScheduleItemDBO(
+            id = item.id,
+            subject = item.subject,
+            dayOfWeek = item.dayOfWeek,
+            startTime = item.startTime,
+            endTime = item.endTime,
+            teacher = item.teacher,
+            room = item.room,
+            color = item.color
         )
     }
 
