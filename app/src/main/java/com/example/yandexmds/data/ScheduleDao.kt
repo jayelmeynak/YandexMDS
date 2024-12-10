@@ -19,7 +19,7 @@ interface ScheduleDao {
     suspend fun insertScheduleItem(scheduleItem: ScheduleItemDBO)
 
     @Update
-    suspend fun editToDo(scheduleItem: ScheduleItemDBO)
+    suspend fun updateScheduleItem(scheduleItem: ScheduleItemDBO)
 
     @Delete
     suspend fun deleteScheduleItem(scheduleItem: ScheduleItemDBO)
