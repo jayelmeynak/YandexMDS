@@ -54,6 +54,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -64,6 +65,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.Significance
+import com.example.yandexmds.presentation.navigation.BottomNavigationBar
+import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.presentation.screens.main.MainViewModel
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.DarkOverlayColor
@@ -83,7 +86,14 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun AddScreen(id: Int?, navController: NavController) {
+fun AddEditTaskScreen(
+    id: Int?,
+    navController: NavController,
+    selectedItem: MutableState<Int>,
+    navigationItems: List<String>,
+    unselectedNavigationIcons: List<ImageVector>,
+    selectedNavigationIcons: List<ImageVector>
+) {
     val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
 
     val task = viewModel.task.observeAsState()
@@ -182,6 +192,21 @@ fun AddScreen(id: Int?, navController: NavController) {
                     navController.navigateUp()
                 }
             )
+        },
+        bottomBar = {
+            BottomNavigationBar(
+                items = navigationItems,
+                selectedItem = selectedItem.value,
+                unselectedIcons = unselectedNavigationIcons,
+                selectedIcons = selectedNavigationIcons
+            ) {
+                selectedItem.value = it
+                if (it == 0) {
+                    navController.navigate(Screen.TasksMain.route)
+                } else {
+                    navController.navigate(Screen.ScheduleMain.route)
+                }
+            }
         },
         floatingActionButton = {
             FloatingActionButton(

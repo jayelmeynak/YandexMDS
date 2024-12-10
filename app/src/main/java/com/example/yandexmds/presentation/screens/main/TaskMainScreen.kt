@@ -25,6 +25,7 @@ import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,13 +41,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
+import com.example.yandexmds.presentation.navigation.BottomNavigationBar
 import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(navController: NavController) {
+fun TaskMainScreen(
+    navController: NavController,
+    navigationItems: List<String>,
+    selectedItem: MutableState<Int>,
+    unselectedNavigationIcons: List<ImageVector>,
+    selectedNavigationIcons: List<ImageVector>
+) {
     val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
     val isFilter by viewModel.isFilter.observeAsState(false)
     val taskList =
@@ -68,6 +77,21 @@ fun MainScreen(navController: NavController) {
                     viewModel.changeFilter()
                 }
             )
+        },
+        bottomBar = {
+            BottomNavigationBar(
+                items = navigationItems,
+                selectedItem = selectedItem.value,
+                unselectedIcons = unselectedNavigationIcons,
+                selectedIcons = selectedNavigationIcons
+            ) {
+                selectedItem.value = it
+                if (it == 0) {
+                    navController.navigate(Screen.TasksMain.route)
+                } else {
+                    navController.navigate(Screen.ScheduleMain.route)
+                }
+            }
         },
         floatingActionButton = {
             FloatingActionButton(

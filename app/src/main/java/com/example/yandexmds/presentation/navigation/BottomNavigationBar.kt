@@ -1,29 +1,33 @@
 package com.example.yandexmds.presentation.navigation
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
-fun BottomNavigationBar(navController: NavController, currentDestination: String) {
-    BottomNavigation {
-        BottomNavigationItem(
-            icon = { Icon(Icons.AutoMirrored.Filled.List, contentDescription = null) },
-            label = { Text("Задачи") },
-            selected = currentDestination == "tasks",
-            onClick = { navController.navigate(Screen.ROUTE_TASKS_MAIN) }
-        )
-        BottomNavigationItem(
-            icon = { Icon(Icons.Default.Schedule, contentDescription = null) },
-            label = { Text("Расписание") },
-            selected = currentDestination == "schedule",
-            onClick = { navController.navigate("schedule") }
-        )
+fun BottomNavigationBar(
+    items: List<String>,
+    selectedItem: Int,
+    unselectedIcons: List<ImageVector>,
+    selectedIcons: List<ImageVector>,
+    onItemSelected: (Int) -> Unit,
+) {
+    NavigationBar {
+        items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        imageVector = if(selectedItem == index) selectedIcons[index] else unselectedIcons[index],
+                        contentDescription = item
+                    )
+                },
+                label = { Text(item) },
+                selected = selectedItem == index,
+                onClick = { onItemSelected(index) }
+            )
+        }
     }
 }
