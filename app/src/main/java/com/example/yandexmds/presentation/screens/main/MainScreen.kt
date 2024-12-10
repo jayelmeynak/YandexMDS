@@ -85,7 +85,6 @@ fun MainScreen(navController: NavController) {
             }
         }
     ) { innerPadding ->
-
         Surface(
             modifier = Modifier
                 .padding(top = innerPadding.calculateTopPadding())
@@ -132,7 +131,7 @@ fun MainScreen(navController: NavController) {
                         }
                     }
                     SwipeToDismissBox(
-                        modifier = Modifier.animateItemPlacement(),
+                        modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null),
                         state = dismissState,
                         backgroundContent = {
                             DismissBackground(
@@ -147,8 +146,11 @@ fun MainScreen(navController: NavController) {
                                 checked = !checked
                             },
                             onTaskClickListener = { task ->
-                                val id = task.id
-                                navController.navigate(Screen.Edit.route + "/$id")
+                                if(!addScreenOpening.value) {
+                                    addScreenOpening.value = true
+                                    val id = task.id
+                                    navController.navigate(Screen.Edit.route + "/$id")
+                                }
                             }
                         )
                     }
