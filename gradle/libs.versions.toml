@@ -10,8 +10,11 @@ materialIconsExtended = "1.7.5"
 navigationCompose = "2.8.4"
 room = "2.6.1"
 runtimeLivedata = "1.7.5"
+colorpicker = "1.1.2"
+
 
 [libraries]
+compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpicker" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }

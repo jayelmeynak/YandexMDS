@@ -70,7 +70,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.compose.colorpicker)
     implementation ("androidx.compose.material:material:1.6.8")
     implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
+    implementation ("io.github.vanpra.compose-material-dialogs:color:0.9.0")
     implementation (libs.androidx.navigation.compose)
 }
