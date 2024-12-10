@@ -1,4 +1,4 @@
-package com.example.yandexmds.domain.useCases
+package com.example.yandexmds.domain.useCases.task
 
 import com.example.yandexmds.domain.ToDoListRepository
 import com.example.yandexmds.domain.model.ToDoItemEntity

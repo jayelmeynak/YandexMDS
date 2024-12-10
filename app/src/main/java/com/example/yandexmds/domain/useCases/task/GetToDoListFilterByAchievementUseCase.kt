@@ -1,4 +1,4 @@
-package com.example.yandexmds.domain.useCases
+package com.example.yandexmds.domain.useCases.task
 
 import androidx.lifecycle.LiveData
 import com.example.yandexmds.domain.ToDoListRepository
