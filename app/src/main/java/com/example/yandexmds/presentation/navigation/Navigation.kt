@@ -17,7 +17,7 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Main.route,
+        startDestination = Screen.TasksMain.route,
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -31,14 +31,14 @@ fun Navigation() {
             )
         }
     ) {
-        composable(Screen.Main.route) {
+        composable(Screen.TasksMain.route) {
             MainScreen(navController = navController)
         }
-        composable(Screen.Add.route) {
+        composable(Screen.TaskAdd.route) {
             AddScreen(id = null, navController = navController)
         }
         composable(
-            route = Screen.Edit.route + "/{id}",
+            route = Screen.TaskEdit.route + "/{id}",
             arguments = listOf(
                 navArgument("id") {
                     type = NavType.IntType

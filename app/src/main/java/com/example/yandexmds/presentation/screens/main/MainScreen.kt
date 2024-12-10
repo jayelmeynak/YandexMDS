@@ -77,7 +77,7 @@ fun MainScreen(navController: NavController) {
                 onClick = {
                     if (!addScreenOpening.value) {
                         addScreenOpening.value = true
-                        navController.navigate(Screen.Add.route)
+                        navController.navigate(Screen.TaskAdd.route)
                     }
                 }) {
                 Icon(
@@ -167,7 +167,7 @@ fun MainScreen(navController: NavController) {
                                     if (!addScreenOpening.value) {
                                         addScreenOpening.value = true
                                         val id = task.id
-                                        navController.navigate(Screen.Edit.route + "/$id")
+                                        navController.navigate(Screen.TaskEdit.route + "/$id")
                                     }
                                 }
                             )
