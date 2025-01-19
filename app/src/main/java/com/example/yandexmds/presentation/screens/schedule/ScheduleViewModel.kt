@@ -10,6 +10,7 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.yandexmds.data.ScheduleRepositoryImpl
 import com.example.yandexmds.domain.model.ScheduleItemEntity
+import com.example.yandexmds.domain.model.Weekday
 import com.example.yandexmds.domain.useCases.schedule.AddScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.DeleteScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.EditScheduleItemUseCase
@@ -51,8 +52,8 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     val groupedScheduleList: LiveData<Map<String, List<ScheduleItemEntity>>> =
         scheduleListWithOutGroup.map { scheduleList ->
             scheduleList
-                .sortedBy { daysOfWeek.indexOf(it.dayOfWeek) }
-                .groupBy { it.dayOfWeek }
+                .sortedBy { daysOfWeek.indexOf(it.dayOfWeek.name) }
+                .groupBy { it.dayOfWeek.name }
         }
 
     init {
@@ -69,30 +70,26 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     fun addScheduleItem(
         subject: String,
-        dayOfWeek: String,
+        room: String?,
+        dayOfWeek: Weekday,
         startTime: String,
         endTime: String,
-        teacher: String,
-        room: String,
-        color: Int
+        teacher: String?,
+        scheduleType: String?,
+        color: Int?
     ) {
-        if (subject.isNotEmpty() && dayOfWeek.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && room.isNotEmpty() && teacher.isNotEmpty()) {
-            val normalizedDayOfWeek = dayOfWeek.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase() else it.toString()
-            }
-            if (normalizedDayOfWeek !in daysOfWeek) {
-                _errorMessage.value = "Неверный день недели"
-                return
-            }
+        if (subject.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty()) {
+
             val scheduleItemEntity = ScheduleItemEntity(
                 id = UNDEFINED_ID,
                 subject = subject,
-                dayOfWeek = normalizedDayOfWeek,
+                dayOfWeek = dayOfWeek,
                 startTime = startTime,
                 endTime = endTime,
                 teacher = teacher,
                 room = room,
-                color = color
+                color = color,
+                scheduleType = scheduleType
             )
             _errorMessage.value = ""
             viewModelScope.launch {
@@ -111,21 +108,15 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     fun updateScheduleItem(
         subject: String,
-        dayOfWeek: String,
+        dayOfWeek: Weekday,
         startTime: String,
         endTime: String,
-        teacher: String,
-        room: String,
-        color: Int
+        teacher: String?,
+        room: String?,
+        scheduleType: String?,
+        color: Int?
     ) {
-        if (subject.isNotEmpty() && dayOfWeek.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && room.isNotEmpty() && teacher.isNotEmpty()) {
-            val normalizedDayOfWeek = dayOfWeek.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase() else it.toString()
-            }
-            if (normalizedDayOfWeek !in daysOfWeek) {
-                _errorMessage.value = "Неверный день недели"
-                return
-            }
+        if (subject.isNotEmpty()  && startTime.isNotEmpty() && endTime.isNotEmpty()) {
             _errorMessage.value = ""
             _scheduleItem.value?.let {
                 val scheduleItemEntity = it.copy(
@@ -135,7 +126,8 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
                     endTime = endTime,
                     teacher = teacher,
                     room = room,
-                    color = color
+                    color = color,
+                    scheduleType = scheduleType
                 )
                 viewModelScope.launch {
                     updateScheduleItemUseCase.editScheduleItem(scheduleItemEntity)

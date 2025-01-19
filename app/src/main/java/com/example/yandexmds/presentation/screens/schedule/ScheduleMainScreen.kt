@@ -1,7 +1,6 @@
 package com.example.yandexmds.presentation.screens.schedule
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,7 +31,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -173,7 +171,6 @@ fun ScheduleItemCard(scheduleItem: ScheduleItemEntity) {
             Spacer(
                 modifier = Modifier
                     .width(8.dp)
-                    .background(Color(scheduleItem.color))
                     .weight(0.1f)
             )
 
@@ -184,19 +181,23 @@ fun ScheduleItemCard(scheduleItem: ScheduleItemEntity) {
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
+                scheduleItem.teacher?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+
+            scheduleItem.room?.let {
                 Text(
-                    text = scheduleItem.teacher,
+                    modifier = Modifier.weight(1f),
+                    text = it,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
-
-            Text(
-                modifier = Modifier.weight(1f),
-                text = scheduleItem.room,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface
-            )
         }
 
     }
