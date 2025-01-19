@@ -46,7 +46,7 @@ class ScheduleRepositoryImpl(application: Application) : ScheduleRepository {
 
     private fun sortScheduleByDayOfWeek(scheduleList: LiveData<List<ScheduleItemEntity>>): LiveData<List<ScheduleItemEntity>> {
         return scheduleList.map { list ->
-            list.sortedBy { daysOrder[it.dayOfWeek] ?: Int.MAX_VALUE }
+            list.sortedBy { daysOrder[it.dayOfWeek.name] ?: Int.MAX_VALUE }
         }
     }
 }

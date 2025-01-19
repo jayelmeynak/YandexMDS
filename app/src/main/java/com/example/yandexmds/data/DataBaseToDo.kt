@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
-@Database(entities = [ToDoItemDBO::class, ScheduleItemDBO::class], version = 6)
+@Database(entities = [ToDoItemDBO::class, ScheduleItemDBO::class], version = 9)
+@TypeConverters(WeekdayConverter::class)
 abstract class DataBaseToDo: RoomDatabase() {
     abstract fun toDoListDao(): ToDoListDao
     abstract fun scheduleDao(): ScheduleDao
@@ -26,7 +28,9 @@ abstract class DataBaseToDo: RoomDatabase() {
                 val db = Room.databaseBuilder(application,
                     DataBaseToDo::class.java,
                     DB_NAME)
-                    .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_6_7)
+                    .addMigrations(MIGRATION_7_8)
+                    .addMigrations(MIGRATION_8_9)
                     .build()
                 INSTANCE = db
                 return db

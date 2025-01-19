@@ -31,7 +31,8 @@ class Mapper {
             endTime = item.endTime,
             teacher = item.teacher,
             room = item.room,
-            color = item.color
+            color = item.color,
+            scheduleType = item.scheduleType
         )
     }
 
@@ -57,7 +58,8 @@ class Mapper {
             endTime = item.endTime,
             teacher = item.teacher,
             room = item.room,
-            color = item.color
+            color = item.color,
+            scheduleType = item.scheduleType
         )
     }
 
