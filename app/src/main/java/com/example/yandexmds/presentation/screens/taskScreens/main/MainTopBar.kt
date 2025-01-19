@@ -1,4 +1,4 @@
-package com.example.yandexmds.presentation.screens.main
+package com.example.yandexmds.presentation.screens.taskScreens.main
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

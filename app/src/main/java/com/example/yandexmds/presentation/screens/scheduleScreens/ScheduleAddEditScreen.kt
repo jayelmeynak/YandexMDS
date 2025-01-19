@@ -1,4 +1,4 @@
-package com.example.yandexmds.presentation.screens.schedule
+package com.example.yandexmds.presentation.screens.scheduleScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.example.yandexmds.presentation.screens.addAndEdit
+package com.example.yandexmds.presentation.screens.taskScreens
 
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -63,7 +63,7 @@ import com.example.yandexmds.domain.model.Significance
 import com.example.yandexmds.presentation.AddTopBar
 import com.example.yandexmds.presentation.navigation.BottomNavigationBar
 import com.example.yandexmds.presentation.navigation.Screen
-import com.example.yandexmds.presentation.screens.main.MainViewModel
+import com.example.yandexmds.presentation.screens.taskScreens.main.MainViewModel
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.DarkOverlayColor
 import com.example.yandexmds.ui.theme.Gray

@@ -15,10 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.yandexmds.presentation.screens.addAndEdit.AddEditTaskScreen
-import com.example.yandexmds.presentation.screens.main.TaskMainScreen
-import com.example.yandexmds.presentation.screens.schedule.AddEditScheduleScreen
-import com.example.yandexmds.presentation.screens.schedule.ScheduleMainScreen
+import com.example.yandexmds.presentation.screens.taskScreens.AddEditTaskScreen
+import com.example.yandexmds.presentation.screens.taskScreens.main.TaskMainScreen
+import com.example.yandexmds.presentation.screens.scheduleScreens.AddEditScheduleScreen
+import com.example.yandexmds.presentation.screens.scheduleScreens.ScheduleMainScreen
 
 @Composable
 fun Navigation() {

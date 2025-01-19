@@ -1,4 +1,4 @@
-package com.example.yandexmds.presentation.screens.schedule
+package com.example.yandexmds.presentation.screens.scheduleScreens
 
 import android.app.Application
 import androidx.compose.runtime.State

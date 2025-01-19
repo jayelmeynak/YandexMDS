@@ -1,4 +1,4 @@
-package com.example.yandexmds.presentation.screens.main
+package com.example.yandexmds.presentation.screens.taskScreens.main
 
 import android.app.Application
 import androidx.compose.runtime.mutableStateOf
