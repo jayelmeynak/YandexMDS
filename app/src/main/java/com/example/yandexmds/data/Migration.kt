@@ -192,5 +192,43 @@ val MIGRATION_8_9 = object : Migration(8, 9) {
     }
 }
 
+val MIGRATION_9_10 = object : Migration(9, 10) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Создаем новую таблицу с нужной структурой
+        db.execSQL(
+            """
+            CREATE TABLE new_ScheduleItemDBO (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                subject TEXT NOT NULL,
+                dayOfWeek TEXT NOT NULL,
+                startTime TEXT NOT NULL,
+                endTime TEXT NOT NULL,
+                teacher TEXT,
+                room TEXT,
+                color INTEGER NOT NULL DEFAULT 0, 
+                scheduleType TEXT
+            )
+            """.trimIndent()
+        )
+
+        // Копируем данные из старой таблицы в новую
+        db.execSQL(
+            """
+            INSERT INTO new_ScheduleItemDBO (id, subject, dayOfWeek, startTime, endTime, teacher, room, color, scheduleType)
+            SELECT id, subject, dayOfWeek, startTime, endTime, teacher, room, 
+                   COALESCE(color, 0), scheduleType
+            FROM ScheduleItemDBO
+            """.trimIndent()
+        )
+
+        // Удаляем старую таблицу
+        db.execSQL("DROP TABLE ScheduleItemDBO")
+
+        // Переименовываем новую таблицу в старое имя
+        db.execSQL("ALTER TABLE new_ScheduleItemDBO RENAME TO ScheduleItemDBO")
+    }
+}
+
+
 
 

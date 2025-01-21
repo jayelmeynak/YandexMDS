@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [ToDoItemDBO::class, ScheduleItemDBO::class], version = 9)
+@Database(entities = [ToDoItemDBO::class, ScheduleItemDBO::class], version = 10)
 @TypeConverters(WeekdayConverter::class)
 abstract class DataBaseToDo: RoomDatabase() {
     abstract fun toDoListDao(): ToDoListDao
@@ -31,6 +31,7 @@ abstract class DataBaseToDo: RoomDatabase() {
                     .addMigrations(MIGRATION_6_7)
                     .addMigrations(MIGRATION_7_8)
                     .addMigrations(MIGRATION_8_9)
+                    .addMigrations(MIGRATION_9_10)
                     .build()
                 INSTANCE = db
                 return db

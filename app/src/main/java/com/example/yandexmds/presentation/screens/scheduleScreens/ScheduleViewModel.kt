@@ -3,6 +3,7 @@ package com.example.yandexmds.presentation.screens.scheduleScreens
 import android.app.Application
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,7 @@ import com.example.yandexmds.domain.useCases.schedule.DeleteScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.EditScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.GetScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.GetScheduleListUseCase
+import com.example.yandexmds.ui.theme.Gray
 import kotlinx.coroutines.launch
 
 class ScheduleViewModel(application: Application) : AndroidViewModel(application) {
@@ -88,7 +90,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
                 endTime = endTime,
                 teacher = teacher,
                 room = room,
-                color = color,
+                color = color ?: Gray.toArgb(),
                 scheduleType = scheduleType
             )
             _errorMessage.value = ""
@@ -126,7 +128,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
                     endTime = endTime,
                     teacher = teacher,
                     room = room,
-                    color = color,
+                    color = color ?: Gray.toArgb(),
                     scheduleType = scheduleType
                 )
                 viewModelScope.launch {

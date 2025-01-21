@@ -13,7 +13,7 @@ data class ScheduleItemDBO(
     val endTime: String,
     val teacher: String?,
     val room: String?,
-    val color: Int?,
+    val color: Int,
     val scheduleType: String?,
 )
 
