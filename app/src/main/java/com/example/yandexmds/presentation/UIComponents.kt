@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.yandexmds.R
 import com.example.yandexmds.ui.theme.Blue
+import com.example.yandexmds.ui.theme.Red
 import com.github.skydoves.colorpicker.compose.AlphaTile
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
@@ -46,9 +47,11 @@ import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddTopBar(
+fun AddEditTopBar(
+    isEditScreen: Boolean,
     onCancelClickListener: () -> Unit,
-    onSaveClickListener: () -> Unit
+    onSaveClickListener: () -> Unit,
+    onDeleteClickListener: () -> Unit
 ) {
     TopAppBar(
         navigationIcon = {
@@ -71,6 +74,17 @@ fun AddTopBar(
                     onSaveClickListener()
                 }) {
                 Text(text = "Сохранить", color = Blue, style = MaterialTheme.typography.titleSmall)
+            }
+            if (isEditScreen) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    colors = ButtonDefaults.buttonColors()
+                        .copy(containerColor = MaterialTheme.colorScheme.background),
+                    onClick = {
+                        onDeleteClickListener()
+                    }) {
+                    Text(text = "Удалить", color = Red, style = MaterialTheme.typography.titleSmall)
+                }
             }
         },
         title = { }

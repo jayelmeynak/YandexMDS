@@ -59,7 +59,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.Significance
-import com.example.yandexmds.presentation.AddTopBar
+import com.example.yandexmds.presentation.AddEditTopBar
 import com.example.yandexmds.presentation.screens.taskScreens.main.MainViewModel
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.DarkOverlayColor
@@ -136,7 +136,8 @@ fun AddEditTaskScreen(
     Scaffold(
         modifier = Modifier.padding(bottom = outerPadding.calculateBottomPadding()),
         topBar = {
-            AddTopBar(
+            AddEditTopBar(
+                isEditScreen = id != null,
                 onCancelClickListener = {
                     navController.popBackStack()
                 },
@@ -181,7 +182,17 @@ fun AddEditTaskScreen(
                         )
                     }
                     navController.navigateUp()
-                }
+                },
+                onDeleteClickListener = {
+                    if (id == null) {
+                        navController.navigateUp()
+                    } else {
+                        if (task.value != null) {
+                            viewModel.deleteTask(task.value!!)
+                            navController.navigateUp()
+                        }
+                    }
+                },
             )
         },
         floatingActionButton = {

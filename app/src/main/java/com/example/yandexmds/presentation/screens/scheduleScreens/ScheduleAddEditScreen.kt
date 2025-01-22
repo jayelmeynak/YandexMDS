@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.domain.model.Weekday
-import com.example.yandexmds.presentation.AddTopBar
+import com.example.yandexmds.presentation.AddEditTopBar
 import com.example.yandexmds.presentation.ColorPickerDialog
 import com.example.yandexmds.presentation.ScheduleTimePicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
@@ -83,7 +83,7 @@ fun AddEditScheduleScreen(
             endTime.value = it.endTime.toLocalTime()
             teacher.value = it.teacher
             room.value = it.room
-            color.value = it.color?.let { it1 -> Color(it1) }
+            color.value = Color(it.color)
         }
     }
 
@@ -93,7 +93,8 @@ fun AddEditScheduleScreen(
         Scaffold(
             modifier = Modifier.padding(bottom = outerPadding.calculateBottomPadding()),
             topBar = {
-                AddTopBar(
+                AddEditTopBar(
+                    isEditScreen = id != null,
                     onCancelClickListener = {
                         navController.popBackStack()
                     },
@@ -124,7 +125,12 @@ fun AddEditScheduleScreen(
                         if (viewModel.errorMessage.value.isEmpty()) {
                             navController.navigateUp()
                         }
-
+                    },
+                    onDeleteClickListener = {
+                        scheduleItem.value?.let {
+                            viewModel.deleteScheduleItem(it)
+                            navController.navigateUp()
+                        }
                     }
                 )
             }
