@@ -49,7 +49,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -61,8 +60,6 @@ import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.Significance
 import com.example.yandexmds.presentation.AddTopBar
-import com.example.yandexmds.presentation.navigation.BottomNavigationBar
-import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.presentation.screens.taskScreens.main.MainViewModel
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.DarkOverlayColor
@@ -85,10 +82,7 @@ import java.time.format.DateTimeFormatter
 fun AddEditTaskScreen(
     id: Int?,
     navController: NavController,
-    selectedItem: MutableState<Int>,
-    navigationItems: List<String>,
-    unselectedNavigationIcons: List<ImageVector>,
-    selectedNavigationIcons: List<ImageVector>
+    outerPadding: PaddingValues
 ) {
     val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
 
@@ -140,6 +134,7 @@ fun AddEditTaskScreen(
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
     Scaffold(
+        modifier = Modifier.padding(bottom = outerPadding.calculateBottomPadding()),
         topBar = {
             AddTopBar(
                 onCancelClickListener = {
@@ -188,21 +183,6 @@ fun AddEditTaskScreen(
                     navController.navigateUp()
                 }
             )
-        },
-        bottomBar = {
-            BottomNavigationBar(
-                items = navigationItems,
-                selectedItem = selectedItem.value,
-                unselectedIcons = unselectedNavigationIcons,
-                selectedIcons = selectedNavigationIcons
-            ) {
-                selectedItem.value = it
-                if (it == 0) {
-                    navController.navigate(Screen.TasksMain.route)
-                } else {
-                    navController.navigate(Screen.ScheduleMain.route)
-                }
-            }
         },
         floatingActionButton = {
             FloatingActionButton(

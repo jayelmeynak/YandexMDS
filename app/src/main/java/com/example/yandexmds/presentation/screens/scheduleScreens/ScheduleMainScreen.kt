@@ -27,14 +27,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -42,7 +40,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.ScheduleItemEntity
-import com.example.yandexmds.presentation.navigation.BottomNavigationBar
 import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.White
@@ -50,31 +47,14 @@ import com.example.yandexmds.ui.theme.White
 @Composable
 fun ScheduleMainScreen(
     navController: NavController,
-    navigationItems: List<String>,
-    selectedItem: MutableState<Int>,
-    unselectedNavigationIcons: List<ImageVector>,
-    selectedNavigationIcons: List<ImageVector>
+    outerPadding: PaddingValues
 ) {
     val viewModel: ScheduleViewModel = viewModel()
     val scheduleList = viewModel.groupedScheduleList.observeAsState(emptyMap()).value
     val addScreenOpening = remember { mutableStateOf(false) }
 
     Scaffold(
-        bottomBar = {
-            BottomNavigationBar(
-                items = navigationItems,
-                selectedItem = selectedItem.value,
-                unselectedIcons = unselectedNavigationIcons,
-                selectedIcons = selectedNavigationIcons
-            ) {
-                selectedItem.value = it
-                if (it == 0) {
-                    navController.navigate(Screen.TasksMain.route)
-                } else {
-                    navController.navigate(Screen.ScheduleMain.route)
-                }
-            }
-        },
+        modifier = Modifier.padding(bottom = outerPadding.calculateBottomPadding()),
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier.size(56.dp),
