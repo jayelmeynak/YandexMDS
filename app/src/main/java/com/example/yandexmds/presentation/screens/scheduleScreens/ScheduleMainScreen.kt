@@ -2,6 +2,7 @@ package com.example.yandexmds.presentation.screens.scheduleScreens
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -47,7 +48,8 @@ import com.example.yandexmds.ui.theme.White
 @Composable
 fun ScheduleMainScreen(
     navController: NavController,
-    outerPadding: PaddingValues
+    outerPadding: PaddingValues,
+    onScheduleClickListener: (scheduleItem: ScheduleItemEntity) -> Unit
 ) {
     val viewModel: ScheduleViewModel = viewModel()
     val scheduleList = viewModel.groupedScheduleList.observeAsState(emptyMap()).value
@@ -120,7 +122,12 @@ fun ScheduleMainScreen(
                                             .fillMaxWidth()
                                     ) {
                                         itemsForDay.forEach { item ->
-                                            ScheduleItemCard(item)
+                                            ScheduleItemCard(item) {
+                                                if (!addScreenOpening.value) {
+                                                    addScreenOpening.value = true
+                                                    onScheduleClickListener(item)
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -135,11 +142,15 @@ fun ScheduleMainScreen(
 
 
 @Composable
-fun ScheduleItemCard(scheduleItem: ScheduleItemEntity) {
+fun ScheduleItemCard(
+    scheduleItem: ScheduleItemEntity,
+    onScheduleClickListener: (scheduleItem: ScheduleItemEntity) -> Unit
+) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable { onScheduleClickListener(scheduleItem) },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 5.dp
         )
@@ -180,9 +191,11 @@ fun ScheduleItemCard(scheduleItem: ScheduleItemEntity) {
                     .width(8.dp)
             )
 
-            Column(modifier = Modifier
-                .weight(3f)
-                .align(Alignment.Top)) {
+            Column(
+                modifier = Modifier
+                    .weight(3f)
+                    .align(Alignment.Top)
+            ) {
                 Text(
                     text = scheduleItem.subject,
                     style = MaterialTheme.typography.titleSmall,
@@ -195,7 +208,7 @@ fun ScheduleItemCard(scheduleItem: ScheduleItemEntity) {
                         text = it,
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface,
-                                overflow = TextOverflow.Ellipsis,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

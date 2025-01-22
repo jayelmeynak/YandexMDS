@@ -72,13 +72,32 @@ fun Navigation(navController: NavHostController, outerPadding: PaddingValues) {
             ScheduleMainScreen(
                 navController = navController,
                 outerPadding = outerPadding
-            )
+            ){
+                navController.navigate(Screen.ScheduleEdit.route + "/${it.id}")
+            }
         }
         composable(Screen.ROUTE_SCHEDULE_ADD) {
             AddEditScheduleScreen(
                 id = null, navController = navController,
                 outerPadding = outerPadding
             )
+        }
+        composable(
+            route = Screen.ScheduleEdit.route + "/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.IntType
+                }
+            )
+        ){ navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt("id")
+            if (id != null) {
+                AddEditScheduleScreen(
+                    id = id,
+                    navController = navController,
+                    outerPadding = outerPadding
+                )
+            }
         }
     }
 }
