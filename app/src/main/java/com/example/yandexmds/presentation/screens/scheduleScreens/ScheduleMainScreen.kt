@@ -201,6 +201,7 @@ fun ScheduleItemCard(
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 scheduleItem.teacher?.let {
@@ -209,6 +210,7 @@ fun ScheduleItemCard(
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface,
                         overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                     )
                 }
             }
