@@ -185,6 +185,7 @@ fun ScheduleTimePicker(
 @Composable
 fun ColorPickerDialog(
     showDialog: Boolean,
+    selectedColor: Int,
     onDismiss: () -> Unit,
     onColorSelected: (Color) -> Unit
 ) {
@@ -202,7 +203,8 @@ fun ColorPickerDialog(
                             .fillMaxWidth()
                             .height(40.dp)
                             .clip(RoundedCornerShape(6.dp)),
-                        controller = controller
+                        controller = controller,
+                        selectedColor = Color(selectedColor)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -213,6 +215,7 @@ fun ColorPickerDialog(
                             .height(250.dp)
                             .padding(10.dp),
                         controller = controller,
+                        initialColor = Color(selectedColor),
                         onColorChanged = {
                             colorChoose = it.color
                         }

@@ -38,6 +38,7 @@ import com.example.yandexmds.domain.model.Weekday
 import com.example.yandexmds.presentation.AddEditTopBar
 import com.example.yandexmds.presentation.ColorPickerDialog
 import com.example.yandexmds.presentation.ScheduleTimePicker
+import com.example.yandexmds.ui.theme.Gray
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalTime
 import java.time.format.DateTimeParseException
@@ -84,6 +85,7 @@ fun AddEditScheduleScreen(
             teacher.value = it.teacher
             room.value = it.room
             color.value = Color(it.color)
+            scheduleType.value = it.scheduleType
         }
     }
 
@@ -280,6 +282,7 @@ fun AddEditScheduleScreen(
 
                 ColorPickerDialog(
                     showDialog = showColorPicker.value,
+                    selectedColor = color.value?.toArgb() ?: Gray.toArgb(),
                     onDismiss = { showColorPicker.value = false },
                     onColorSelected = { selectedColor ->
                         color.value = selectedColor
