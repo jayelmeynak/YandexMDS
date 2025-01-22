@@ -9,4 +9,5 @@ interface ScheduleRepository {
     suspend fun editScheduleItem(item: ScheduleItemEntity)
     suspend fun getScheduleItem(id: Int): ScheduleItemEntity
     fun getScheduleList(): LiveData<List<ScheduleItemEntity>>
+    suspend fun deleteAllScheduleItems()
 }

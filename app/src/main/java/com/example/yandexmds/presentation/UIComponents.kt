@@ -91,6 +91,36 @@ fun AddEditTopBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ScheduleMainTopBar(
+    onDeleteClickListener: () -> Unit
+){
+    TopAppBar(
+        title = {
+            Text(
+                text = "Расписание",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = {
+                    onDeleteClickListener()
+                }
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.delete),
+                    contentDescription = null,
+                    tint = Red
+                )
+            }
+        }
+    )
+}
+
 
 @Composable
 fun ScheduleTimePicker(

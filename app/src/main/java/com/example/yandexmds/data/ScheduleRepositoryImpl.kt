@@ -44,6 +44,10 @@ class ScheduleRepositoryImpl(application: Application) : ScheduleRepository {
         })
     }
 
+    override suspend fun deleteAllScheduleItems() {
+        scheduleDao.deleteAllScheduleItems()
+    }
+
     private fun sortScheduleByDayOfWeek(scheduleList: LiveData<List<ScheduleItemEntity>>): LiveData<List<ScheduleItemEntity>> {
         return scheduleList.map { list ->
             list.sortedBy { daysOrder[it.dayOfWeek.name] ?: Int.MAX_VALUE }

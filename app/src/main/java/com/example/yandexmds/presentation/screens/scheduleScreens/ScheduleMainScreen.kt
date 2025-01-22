@@ -41,6 +41,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.ScheduleItemEntity
+import com.example.yandexmds.presentation.ScheduleMainTopBar
 import com.example.yandexmds.presentation.navigation.Screen
 import com.example.yandexmds.ui.theme.Blue
 import com.example.yandexmds.ui.theme.White
@@ -57,6 +58,11 @@ fun ScheduleMainScreen(
 
     Scaffold(
         modifier = Modifier.padding(bottom = outerPadding.calculateBottomPadding()),
+        topBar = {
+            ScheduleMainTopBar{
+                viewModel.deleteAllScheduleItems()
+            }
+        },
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier.size(56.dp),

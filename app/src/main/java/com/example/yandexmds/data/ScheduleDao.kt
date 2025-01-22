@@ -23,4 +23,7 @@ interface ScheduleDao {
 
     @Delete
     suspend fun deleteScheduleItem(scheduleItem: ScheduleItemDBO)
+
+    @Query("DELETE FROM ScheduleItemDBO")
+    suspend fun deleteAllScheduleItems()
 }

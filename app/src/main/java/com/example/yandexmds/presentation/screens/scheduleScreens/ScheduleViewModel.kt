@@ -13,6 +13,7 @@ import com.example.yandexmds.data.ScheduleRepositoryImpl
 import com.example.yandexmds.domain.model.ScheduleItemEntity
 import com.example.yandexmds.domain.model.Weekday
 import com.example.yandexmds.domain.useCases.schedule.AddScheduleItemUseCase
+import com.example.yandexmds.domain.useCases.schedule.DeleteAllScheduleItemsUseCase
 import com.example.yandexmds.domain.useCases.schedule.DeleteScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.EditScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.GetScheduleItemUseCase
@@ -27,6 +28,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val updateScheduleItemUseCase = EditScheduleItemUseCase(repository)
     private val getScheduleItemUseCase = GetScheduleItemUseCase(repository)
     private val getScheduleListUseCase = GetScheduleListUseCase(repository)
+    private val deleteAllScheduleItemsUseCase = DeleteAllScheduleItemsUseCase(repository)
 
     private val _isScheduleItemLoading = mutableStateOf(false)
     val isScheduleItemLoading: State<Boolean>
@@ -146,6 +148,12 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
             _isScheduleItemLoading.value = true
             _scheduleItem.value = getScheduleItemUseCase.getScheduleItem(id)
             _isScheduleItemLoading.value = false
+        }
+    }
+
+    fun deleteAllScheduleItems() {
+        viewModelScope.launch {
+            deleteAllScheduleItemsUseCase()
         }
     }
 
