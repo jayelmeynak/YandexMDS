@@ -25,13 +25,13 @@ fun BottomNavigationBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     // 0 - если пользователь на экране, связанном с задачами, 1 - если на экране, связанном с расписанием
     val currentRoute =
-        when(navBackStackEntry?.destination?.route) {
-            Screen.TasksMain.route -> 0
-            Screen.TaskAdd.route -> 0
-            Screen.TaskEdit.route -> 0
-            Screen.ScheduleMain.route -> 1
-            Screen.ScheduleAdd.route -> 1
-            Screen.ScheduleEdit.route -> 1
+        when {
+            isRouteInGroup(navBackStackEntry?.destination?.route, Screen.TasksMain.route) -> 0
+            isRouteInGroup(navBackStackEntry?.destination?.route, Screen.TaskAdd.route) -> 0
+            isRouteInGroup(navBackStackEntry?.destination?.route, Screen.TaskEdit.route) -> 0
+            isRouteInGroup(navBackStackEntry?.destination?.route, Screen.ScheduleMain.route) -> 1
+            isRouteInGroup(navBackStackEntry?.destination?.route, Screen.ScheduleAdd.route) -> 1
+            isRouteInGroup(navBackStackEntry?.destination?.route, Screen.ScheduleEdit.route) -> 1
             else -> 0
         }
     NavigationBar {
@@ -55,4 +55,8 @@ fun BottomNavigationBar(
             )
         }
     }
+}
+
+fun isRouteInGroup(route: String?, groupRoute: String): Boolean {
+    return route?.startsWith(groupRoute) == true
 }
