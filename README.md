@@ -7,7 +7,7 @@
 
 ### Экран списка дел
 
-На данном экране отображаются все "задачи" с визульной информацией о дедлайне(при наличии), приоритете задачи(если его обозначили), а также с чекбоксом, отображающий выполнена ли задача. Реализовано удаление/выполнение задачи по свайпу карточки. В TopBar отображается кол-во выполненных задач.
+На данном экране отображаются все "задачи" с визуальной информацией о дедлайне(при наличии), приоритете задачи(если его обозначили), а также с чекбоксом, отображающий выполнена ли задача. Реализовано удаление/выполнение задачи по свайпу карточки. В TopBar отображается кол-во выполненных задач.
 
 ### Экран создания/редактирования задачи
 
@@ -24,17 +24,9 @@
 
 <img src="./screenshots/MainScreen4.jpg" alt="MainScreen 4" width="400"/>
 
-<img src="./screenshots/MainScreen5.jpg" alt="MainScreen 5" width="400"/>
-
 <img src="./screenshots/AddScreen.jpg" alt="AddScreen" width="400"/>
 
-<img src="./screenshots/AddEditScreen1.jpg" alt="EditScreen 1" width="400"/>
-
-<img src="./screenshots/AddEditScreen2.jpg" alt="EditScreen 2" width="400"/>
-
 <img src="./screenshots/AddEditScreen3.jpg" alt="EditScreen 3" width="400"/>
-
-<img src="./screenshots/AddEditScreen7.jpg" alt="EditScreen 4" width="400"/>
 
 
 ## Стек
@@ -45,6 +37,7 @@
  - Навигация: Jetpack Navigation
  - Архитектура: Clean Architecture
  - Паттерн проектирования: MVVM
+ - DI: Hilt
 
 ## **Инструкция по запуску**
 

@@ -1,6 +1,5 @@
 package com.example.yandexmds.presentation.screens.taskScreens.main
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,10 +32,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.presentation.navigation.Screen
@@ -49,7 +47,7 @@ fun TaskMainScreen(
     navController: NavController,
     outerPadding: PaddingValues
 ) {
-    val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
+    val viewModel: MainViewModel = hiltViewModel()
     val isFilter by viewModel.isFilter.observeAsState(false)
     val taskList =
         (if (isFilter) viewModel.filterTasksList else viewModel.allTasksList).observeAsState(

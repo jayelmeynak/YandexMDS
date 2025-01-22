@@ -1,14 +1,13 @@
 package com.example.yandexmds.data
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.example.yandexmds.domain.repository.ToDoListRepository
 import com.example.yandexmds.domain.model.ToDoItemEntity
+import com.example.yandexmds.domain.repository.ToDoListRepository
+import javax.inject.Inject
 
-class ToDoListRepositoryImpl(application: Application) : ToDoListRepository {
-    private val toDoListDao = DataBaseToDo.getInstance(application).toDoListDao()
-    val mapper = Mapper()
+class ToDoListRepositoryImpl @Inject constructor(private val toDoListDao: ToDoListDao) : ToDoListRepository {
+    private val mapper = Mapper()
 
     override suspend fun addToDo(item: ToDoItemEntity) {
         toDoListDao.addToDo(mapper.mapEntityToDBModel(item))

@@ -1,17 +1,16 @@
 package com.example.yandexmds.presentation.screens.scheduleScreens
 
-import android.app.Application
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.example.yandexmds.data.ScheduleRepositoryImpl
 import com.example.yandexmds.domain.model.ScheduleItemEntity
 import com.example.yandexmds.domain.model.Weekday
+import com.example.yandexmds.domain.repository.ScheduleRepository
 import com.example.yandexmds.domain.useCases.schedule.AddScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.DeleteAllScheduleItemsUseCase
 import com.example.yandexmds.domain.useCases.schedule.DeleteScheduleItemUseCase
@@ -19,10 +18,13 @@ import com.example.yandexmds.domain.useCases.schedule.EditScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.GetScheduleItemUseCase
 import com.example.yandexmds.domain.useCases.schedule.GetScheduleListUseCase
 import com.example.yandexmds.ui.theme.Gray
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ScheduleViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = ScheduleRepositoryImpl(application)
+
+@HiltViewModel
+class ScheduleViewModel @Inject constructor(repository: ScheduleRepository) : ViewModel() {
     private val addScheduleItemUseCase = AddScheduleItemUseCase(repository)
     private val deleteScheduleItemUseCase = DeleteScheduleItemUseCase(repository)
     private val updateScheduleItemUseCase = EditScheduleItemUseCase(repository)

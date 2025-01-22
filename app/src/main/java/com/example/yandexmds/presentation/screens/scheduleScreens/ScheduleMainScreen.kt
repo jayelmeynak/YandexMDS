@@ -37,7 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.ScheduleItemEntity
@@ -52,7 +52,7 @@ fun ScheduleMainScreen(
     outerPadding: PaddingValues,
     onScheduleClickListener: (scheduleItem: ScheduleItemEntity) -> Unit
 ) {
-    val viewModel: ScheduleViewModel = viewModel()
+    val viewModel: ScheduleViewModel = hiltViewModel()
     val scheduleList = viewModel.groupedScheduleList.observeAsState(emptyMap()).value
     val addScreenOpening = remember { mutableStateOf(false) }
 

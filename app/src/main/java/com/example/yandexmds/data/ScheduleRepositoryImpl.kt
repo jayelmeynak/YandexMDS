@@ -1,14 +1,13 @@
 package com.example.yandexmds.data
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.yandexmds.domain.model.ScheduleItemEntity
 import com.example.yandexmds.domain.repository.ScheduleRepository
+import javax.inject.Inject
 
-class ScheduleRepositoryImpl(application: Application) : ScheduleRepository {
-    private val scheduleDao = DataBaseToDo.getInstance(application).scheduleDao()
-    val mapper = Mapper()
+class ScheduleRepositoryImpl @Inject constructor(private val scheduleDao: ScheduleDao) : ScheduleRepository {
+    private val mapper = Mapper()
 
     private val daysOrder = mapOf(
         "Понедельник" to 1,

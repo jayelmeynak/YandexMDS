@@ -1,30 +1,31 @@
 package com.example.yandexmds.presentation.screens.taskScreens.main
 
-import android.app.Application
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.yandexmds.data.ToDoListRepositoryImpl
 import com.example.yandexmds.domain.model.Significance
 import com.example.yandexmds.domain.model.ToDoItemEntity
+import com.example.yandexmds.domain.repository.ToDoListRepository
 import com.example.yandexmds.domain.useCases.task.AddToDoUseCase
 import com.example.yandexmds.domain.useCases.task.DeleteToDoUseCase
 import com.example.yandexmds.domain.useCases.task.EditToDoUseCase
 import com.example.yandexmds.domain.useCases.task.GetToDoItemUseCase
 import com.example.yandexmds.domain.useCases.task.GetToDoListFilterByAchievementUseCase
 import com.example.yandexmds.domain.useCases.task.GetToDoListUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class MainViewModel @Inject constructor(repository: ToDoListRepository) : ViewModel() {
 
-    private val repository = ToDoListRepositoryImpl(application)
     private val addTask = AddToDoUseCase(repository)
     private val editTask = EditToDoUseCase(repository)
     private val deleteTask = DeleteToDoUseCase(repository)

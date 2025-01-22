@@ -1,7 +1,6 @@
 package com.example.yandexmds.presentation.screens.taskScreens
 
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -50,12 +49,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.R
 import com.example.yandexmds.domain.model.Significance
@@ -84,7 +82,7 @@ fun AddEditTaskScreen(
     navController: NavController,
     outerPadding: PaddingValues
 ) {
-    val viewModel: MainViewModel = viewModel(LocalContext.current as ComponentActivity)
+    val viewModel: MainViewModel = hiltViewModel()
 
     val task = viewModel.task.observeAsState()
     val isTaskLoaded by viewModel.isTaskLoaded.collectAsState()

@@ -9,7 +9,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.yandexmds.presentation.navigation.BottomNavigationBar
 import com.example.yandexmds.presentation.navigation.Navigation
 import com.example.yandexmds.ui.theme.YandexMDSTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

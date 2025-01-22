@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.yandexmds.domain.model.Weekday
 import com.example.yandexmds.presentation.AddEditTopBar
@@ -50,7 +50,7 @@ fun AddEditScheduleScreen(
     navController: NavController,
     outerPadding: PaddingValues
 ) {
-    val viewModel: ScheduleViewModel = viewModel()
+    val viewModel: ScheduleViewModel = hiltViewModel()
 
     val scheduleItem = viewModel.scheduleItem.observeAsState()
     val isScheduleItemLoading = viewModel.isScheduleItemLoading
